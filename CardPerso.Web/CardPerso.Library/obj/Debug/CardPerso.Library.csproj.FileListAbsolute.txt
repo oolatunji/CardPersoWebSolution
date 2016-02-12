@@ -1,0 +1,10 @@
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\CardPerso.Library.dll
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\CardPerso.Library.pdb
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\AutoMapper.dll
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\AutoMapper.xml
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.csprojResolveAssemblyReference.cache
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.dll
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.pdb
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\Newtonsoft.Json.dll
+C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\Newtonsoft.Json.xml

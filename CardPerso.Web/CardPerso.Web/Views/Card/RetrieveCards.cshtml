@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Retrieve Cards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/retrievecards")
+<aside class="content-wrapper sidebarLeft">
+    <div class="content container-fluid sidebarRight animated fadeInUp">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-white">
+                    <div class="panel-body content-title-container">
+                        <div class="right">
+                            <ol class="breadcrumb breadcrumb-theme breadcrumb-sm breadcrumb-blue">
+                                <li><a href="~/Home/Dashboard">Dashboard</a></li>
+                                <li><a>Card Management</a></li>
+                                <li class="active"><a>View Cards</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Search Panel</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="form-validation" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <div class="col-sm-1">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input id="openrequestedFrom" type="button" value="open" />
+                                    <input id="closerequestedFrom" type="button" value="close" />
+                                    <input type="text" class="form-control" placeholder="Requested From" id="requestedFrom" readonly="readonly" />
+                                </div>
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input id="openrequestedTo" type="button" value="open" />
+                                    <input id="closerequestedTo" type="button" value="close" />
+                                    <input type="text" class="form-control" placeholder="Requested To" id="requestedTo" readonly="readonly" />
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-1">
+                                </div>
+                                <div class="col-sm-4">
+                                    <select class="form-control" id="status">
+                                        <option value="">Select Print Status</option>
+                                        <option value="1">Not Printed</option>
+                                        <option value="3">Printed</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" placeholder="Requested By" id="requestedby" readonly="readonly"/>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-1">
+                                </div>
+                                <div class="col-sm-4">
+                                </div>
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="submit" id="searchBtn" class="btn btn-blue" style="float:right;" onclick="search()"><i class="fa fa-cog"></i> Search</button>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">View Cards</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table id="example" class="cell-border order-column" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Name on Card</th>
+                                    <th>Pan</th>
+                                    <th>Print Status</th>
+                                    <th>Username</th>
+                                    <th>Printed Name</th>
+                                    <th>Date</th>
+                                    <th style="display:none">Track 1 Data</th>
+                                    <th style="display:none">Track 2 Data</th>
+                                </tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Name on Card</th>
+                                    <th>Pan</th>
+                                    <th>Print Status</th>
+                                    <th>Username</th>
+                                    <th>Printed Name</th>
+                                    <th>Date</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</aside>
+

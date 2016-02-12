@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardPerso.Web", "CardPerso.Web\CardPerso.Web.csproj", "{191A39FE-A2C4-4D1F-94D3-767B10505833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWithOracleTest", "EFWithOracleTest\EFWithOracleTest.csproj", "{A209BB75-B4E3-4CA2-BDDA-9D3DD914D8D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardPerso.Library", "CardPerso.Library\CardPerso.Library.csproj", "{7D4DD5F9-6C77-4BA0-9593-D3AA34FD89F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{191A39FE-A2C4-4D1F-94D3-767B10505833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191A39FE-A2C4-4D1F-94D3-767B10505833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191A39FE-A2C4-4D1F-94D3-767B10505833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191A39FE-A2C4-4D1F-94D3-767B10505833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A209BB75-B4E3-4CA2-BDDA-9D3DD914D8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A209BB75-B4E3-4CA2-BDDA-9D3DD914D8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A209BB75-B4E3-4CA2-BDDA-9D3DD914D8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A209BB75-B4E3-4CA2-BDDA-9D3DD914D8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4DD5F9-6C77-4BA0-9593-D3AA34FD89F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4DD5F9-6C77-4BA0-9593-D3AA34FD89F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4DD5F9-6C77-4BA0-9593-D3AA34FD89F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4DD5F9-6C77-4BA0-9593-D3AA34FD89F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
