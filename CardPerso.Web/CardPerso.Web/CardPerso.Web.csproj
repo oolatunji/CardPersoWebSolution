@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -156,6 +158,8 @@
     <Compile Include="Controllers\FunctionAPIController.cs" />
     <Compile Include="Controllers\FunctionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IPAPIController.cs" />
+    <Compile Include="Controllers\IPController.cs" />
     <Compile Include="Controllers\RoleAPIController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SystemAPIController.cs" />
@@ -170,6 +174,7 @@
     <Compile Include="Models\ApprovalModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\FunctionModel.cs" />
+    <Compile Include="Models\IPModel.cs" />
     <Compile Include="Models\ModelStateValidation.cs" />
     <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
@@ -285,6 +290,8 @@
     <Content Include="Scripts\app\Approval\Configuration.js" />
     <Content Include="Scripts\app\Approval\ViewApproval.js" />
     <Content Include="Scripts\app\Card\RetrieveCards.js" />
+    <Content Include="Scripts\app\IP\AddIP.js" />
+    <Content Include="Scripts\app\IP\ViewIP.js" />
     <Content Include="Scripts\app\Utility\AuditTrail.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
@@ -389,6 +396,8 @@
     <Content Include="Views\Approval\ViewApproval.cshtml" />
     <Content Include="Views\System\Configuration.cshtml" />
     <Content Include="Views\System\SystemConfiguration.cshtml" />
+    <Content Include="Views\IP\AddIP.cshtml" />
+    <Content Include="Views\IP\ViewIP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CardPerso.Library\CardPerso.Library.csproj">

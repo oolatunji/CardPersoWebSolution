@@ -1,1 +1,1 @@
-var settingsManager = {"websiteURL": "http://localhost/CardPersoSolution/"};
+var settingsManager = { "websiteURL": "http://192.168.0.2/CardPersoSolution/" };

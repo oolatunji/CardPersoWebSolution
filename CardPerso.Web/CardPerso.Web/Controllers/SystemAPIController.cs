@@ -83,12 +83,21 @@ namespace CardPerso.Web.Controllers
                     mailHelperSection.Mail.FromEmailAddress = systemModel.FromEmailAddress;
                     mailHelperSection.Mail.Username = systemModel.SmtpUsername;
                     mailHelperSection.Mail.Password = systemModel.SmtpPassword;
-
                     mailHelperSection.Smtp.Host = systemModel.SmtpHost;
                     mailHelperSection.Smtp.Port = systemModel.SmtpPort;
 
-                    configuration.Save();
+                    var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
+                    activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory = systemModel.UsesActiveDirectory;
+                    activeDirectoryHelperSection.ActiveDirectory.ADServer = systemModel.ADServer;
+                    activeDirectoryHelperSection.ActiveDirectory.ADContainer = systemModel.ADContainer;
+                    activeDirectoryHelperSection.ActiveDirectory.ADUsername = systemModel.ADUsername;
+                    activeDirectoryHelperSection.ActiveDirectory.ADPassword = systemModel.ADPassword;
+                    activeDirectoryHelperSection.ActiveDirectory.ADServer2 = systemModel.ADServer2;
+                    activeDirectoryHelperSection.ActiveDirectory.ADContainer2 = systemModel.ADContainer2;
+                    activeDirectoryHelperSection.ActiveDirectory.ADUsername2 = systemModel.ADUsername2;
+                    activeDirectoryHelperSection.ActiveDirectory.ADPassword2 = systemModel.ADPassword2;
 
+                    configuration.Save();
 
                     bool result = true;
 
@@ -176,10 +185,25 @@ namespace CardPerso.Web.Controllers
                 FromEmailAddress = fromEmailAddress,
             };
 
+            var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
+            Object activeDirectorySettings = new
+            {
+                UsesActiveDirectory = Convert.ToBoolean(activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory),
+                ADServer = activeDirectoryHelperSection.ActiveDirectory.ADServer,
+                ADContainer = activeDirectoryHelperSection.ActiveDirectory.ADContainer,
+                ADUsername = activeDirectoryHelperSection.ActiveDirectory.ADUsername,
+                ADPassword = activeDirectoryHelperSection.ActiveDirectory.ADPassword,
+                ADServer2 = activeDirectoryHelperSection.ActiveDirectory.ADServer2,
+                ADContainer2 = activeDirectoryHelperSection.ActiveDirectory.ADContainer2,
+                ADUsername2 = activeDirectoryHelperSection.ActiveDirectory.ADUsername2,
+                ADPassword2 = activeDirectoryHelperSection.ActiveDirectory.ADPassword2
+            };
+
             systemSettings = new
             {
                 GeneralSettings = generalSettings,
-                MailSettings = mailSettings
+                MailSettings = mailSettings,
+                ActiveDirectorySettings = activeDirectorySettings
             };
 
             return systemSettings;

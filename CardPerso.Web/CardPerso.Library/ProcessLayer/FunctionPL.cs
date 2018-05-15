@@ -26,88 +26,25 @@ namespace CardPerso.Library.ProcessLayer
                 }
                 else
                 {
-                    if (!overrideApproval)
+                    if (FunctionDL.Save(function))
                     {
-                        bool logForApproval = ApprovalConfigurationDL.RetrieveByType(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateFunction)).Approve;
-
-                        if (logForApproval)
+                        return new Response
                         {
-                            Approval approvalObj = new Approval();
-                            approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateFunction);
-                            approvalObj.Details = JsonConvert.SerializeObject(function);
-                            approvalObj.Obj = JsonConvert.SerializeObject(function);
-                            approvalObj.RequestedBy = username;
-                            approvalObj.RequestedOn = System.DateTime.Now;
-                            approvalObj.Status = StatusUtil.ApprovalStatus.Pending.ToString();
-
-                            if (ApprovalDL.Save(approvalObj))
-                            {
-                                return new Response
-                                {
-                                    SuccessMsg = "Function successfully logged for approval",
-                                    ErrorMsg = string.Empty
-                                };
-                            }
-                            else
-                            {
-                                return new Response
-                                {
-                                    SuccessMsg = string.Empty,
-                                    ErrorMsg = "Operation failed"
-                                };
-                            }
-                        }
-                        else
-                        {
-                            if (FunctionDL.Save(function))
-                            {
-                                AuditTrail obj = new AuditTrail();
-                                obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateFunction);
-                                obj.Details = JsonConvert.SerializeObject(function);
-                                obj.RequestedBy = username;
-                                obj.RequestedOn = System.DateTime.Now;
-                                obj.ApprovedBy = username;
-                                obj.ApprovedOn = System.DateTime.Now;
-                                AuditTrailDL.Save(obj);
-
-                                return new Response
-                                {
-                                    SuccessMsg = "Function added successfully",
-                                    ErrorMsg = string.Empty
-                                };
-                            }
-                            else
-                            {
-                                return new Response
-                                {
-                                    SuccessMsg = string.Empty,
-                                    ErrorMsg = "Operation failed"
-                                };
-                            }
-                        }
+                            SuccessMsg = "Function added successfully",
+                            ErrorMsg = string.Empty
+                        };
                     }
                     else
                     {
-                        if (FunctionDL.Save(function))
+                        return new Response
                         {
-                            return new Response
-                            {
-                                SuccessMsg = "Function added successfully",
-                                ErrorMsg = string.Empty
-                            };
-                        }
-                        else
-                        {
-                            return new Response
-                            {
-                                SuccessMsg = string.Empty,
-                                ErrorMsg = "Operation failed"
-                            };
-                        }
+                            SuccessMsg = string.Empty,
+                            ErrorMsg = "Operation failed"
+                        };
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorHandler.WriteError(ex);
                 return new Response
@@ -122,84 +59,21 @@ namespace CardPerso.Library.ProcessLayer
         {
             try
             {
-                if (!overrideApproval)
+                if (FunctionDL.Update(function))
                 {
-                    bool logForApproval = ApprovalConfigurationDL.RetrieveByType(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateFunction)).Approve;
-
-                    if (logForApproval)
+                    return new Response
                     {
-                        Approval approvalObj = new Approval();
-                        approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateFunction);
-                        approvalObj.Details = JsonConvert.SerializeObject(function);
-                        approvalObj.Obj = JsonConvert.SerializeObject(function);
-                        approvalObj.RequestedBy = username;
-                        approvalObj.RequestedOn = System.DateTime.Now;
-                        approvalObj.Status = StatusUtil.ApprovalStatus.Pending.ToString();
-
-                        if (ApprovalDL.Save(approvalObj))
-                        {
-                            return new Response
-                            {
-                                SuccessMsg = "Function successfully logged for approval",
-                                ErrorMsg = string.Empty
-                            };
-                        }
-                        else
-                        {
-                            return new Response
-                            {
-                                SuccessMsg = string.Empty,
-                                ErrorMsg = "Operation failed"
-                            };
-                        }
-                    }
-                    else
-                    {
-                        if (FunctionDL.Update(function))
-                        {
-                            AuditTrail obj = new AuditTrail();
-                            obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateFunction);
-                            obj.Details = JsonConvert.SerializeObject(function);
-                            obj.RequestedBy = username;
-                            obj.RequestedOn = System.DateTime.Now;
-                            obj.ApprovedBy = username;
-                            obj.ApprovedOn = System.DateTime.Now;
-                            AuditTrailDL.Save(obj);
-
-                            return new Response
-                            {
-                                SuccessMsg = "Function updated successfully",
-                                ErrorMsg = string.Empty
-                            };
-                        }
-                        else
-                        {
-                            return new Response
-                            {
-                                SuccessMsg = string.Empty,
-                                ErrorMsg = "Operation failed"
-                            };
-                        }
-                    }
+                        SuccessMsg = "Function updated successfully",
+                        ErrorMsg = string.Empty
+                    };
                 }
                 else
                 {
-                    if (FunctionDL.Update(function))
+                    return new Response
                     {
-                        return new Response
-                        {
-                            SuccessMsg = "Function updated successfully",
-                            ErrorMsg = string.Empty
-                        };
-                    }
-                    else
-                    {
-                        return new Response
-                        {
-                            SuccessMsg = string.Empty,
-                            ErrorMsg = "Operation failed"
-                        };
-                    }
+                        SuccessMsg = string.Empty,
+                        ErrorMsg = "Operation failed"
+                    };
                 }
             }
             catch (Exception ex)

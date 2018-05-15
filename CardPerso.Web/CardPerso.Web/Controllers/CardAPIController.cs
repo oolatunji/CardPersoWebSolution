@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace CardPerso.Web.Controllers
@@ -53,6 +54,7 @@ namespace CardPerso.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     Card card = Mapper.Map<Card>(model);
+                    card.ClientIP = HttpContext.Current.Request.UserHostAddress;
                     Response result = CardPL.Update(card, model.LoggedInUser, false);
                     return Request.CreateResponse(HttpStatusCode.OK, result);
                 }

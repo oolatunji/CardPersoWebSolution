@@ -153,15 +153,20 @@ namespace CardPerso.Library.ProcessLayer
 
             var response = new Response();
 
-            if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateFunction)))
+            if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateIP)))
             {
-                var obj = JsonConvert.DeserializeObject<Function>(approval.Obj);
-                response = FunctionPL.Save(obj, string.Empty, true);
+                var obj = JsonConvert.DeserializeObject<IP>(approval.Obj);
+                response = IPPL.Save(obj, string.Empty, true);
             }
-            else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateFunction)))
+            else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateIP)))
             {
-                var obj = JsonConvert.DeserializeObject<Function>(approval.Obj);
-                response = FunctionPL.Update(obj, string.Empty, true);
+                var obj = JsonConvert.DeserializeObject<IP>(approval.Obj);
+                response = IPPL.Update(obj, string.Empty, true);
+            }
+            else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.DeleteIP)))
+            {
+                var obj = JsonConvert.DeserializeObject<IP>(approval.Obj);
+                response = IPPL.Delete(obj, string.Empty, true);
             }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateRole)))
             {
@@ -196,6 +201,7 @@ namespace CardPerso.Library.ProcessLayer
             audit.RequestedOn = approval.RequestedOn;
             audit.ApprovedBy = approval.ApprovedBy;
             audit.ApprovedOn = System.DateTime.Now;
+            audit.ClientIP = approval.ClientIP;
             AuditTrailDL.Save(audit);
 
             return response;

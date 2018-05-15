@@ -4,14 +4,64 @@ using CardPerso.Library.ModelLayer.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace CardPerso.Library.ProcessLayer
 {
     public class UserPL
     {
+        public static bool UserExistsAD(string username, string password)
+        {
+            try
+            {
+                var auth = false;
+
+                var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+                var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
+
+                string adServer = activeDirectoryHelperSection.ActiveDirectory.ADServer;
+                string adContainer = activeDirectoryHelperSection.ActiveDirectory.ADContainer;
+                string adUsername = activeDirectoryHelperSection.ActiveDirectory.ADUsername;
+                string adPassword = activeDirectoryHelperSection.ActiveDirectory.ADPassword;
+                string adServer2 = activeDirectoryHelperSection.ActiveDirectory.ADServer2;
+                string adContainer2 = activeDirectoryHelperSection.ActiveDirectory.ADContainer2;
+                string adUsername2 = activeDirectoryHelperSection.ActiveDirectory.ADUsername2;
+                string adPassword2 = activeDirectoryHelperSection.ActiveDirectory.ADPassword2;
+
+                try
+                {
+                    PrincipalContext insPrincipalContext = new PrincipalContext(ContextType.Domain, adServer, adContainer, adUsername, adPassword);
+
+                    UserPrincipal insUserPrincipal = new UserPrincipal(insPrincipalContext);
+                    auth = insPrincipalContext.ValidateCredentials(username, password);
+                }
+                catch
+                {
+                    try
+                    {
+                        PrincipalContext insPrincipalContext = new PrincipalContext(ContextType.Domain, adServer2, adContainer2, adUsername2, adPassword2);
+
+                        UserPrincipal insUserPrincipal = new UserPrincipal(insPrincipalContext);
+                        auth = insPrincipalContext.ValidateCredentials(username, password);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                return auth;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static Response Save(User user, string username, bool overrideApproval)
         {
             try
@@ -68,6 +118,7 @@ namespace CardPerso.Library.ProcessLayer
                                 obj.RequestedOn = System.DateTime.Now;
                                 obj.ApprovedBy = username;
                                 obj.ApprovedOn = System.DateTime.Now;
+                                obj.ClientIP = user.ClientIP;
                                 AuditTrailDL.Save(obj);
 
                                 return new Response
@@ -164,6 +215,7 @@ namespace CardPerso.Library.ProcessLayer
                             obj.RequestedOn = System.DateTime.Now;
                             obj.ApprovedBy = username;
                             obj.ApprovedOn = System.DateTime.Now;
+                            obj.ClientIP = user.ClientIP;
                             AuditTrailDL.Save(obj);
 
                             return new Response
@@ -271,24 +323,50 @@ namespace CardPerso.Library.ProcessLayer
         {
             try
             {
-                var authenticatedUser = UserDL.AuthenticateUser(user);
-                if (authenticatedUser != null)
+                var authenticatedUser = new User();
+                var response = new Response();
+
+                var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+                var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
+                bool useActiveDirectory = Convert.ToBoolean(activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory);
+
+                if(useActiveDirectory)
                 {
-                    authenticatedUser.Function = FunctionDL.RetrieveByRoleId(authenticatedUser.UserRole.Id);
-                    return new Response
+                    var adAuthenticationSuccessful = UserExistsAD(user.Username, user.Password);
+                    if(adAuthenticationSuccessful)
                     {
-                        ErrorMsg = string.Empty,
-                        DynamicList = new { data = authenticatedUser }
-                    };
+                        authenticatedUser = UserDL.RetrieveUserByUsername(user);                        
+                    }                    
                 }
                 else
                 {
-                    return new Response
-                    {
-                        ErrorMsg = "Invalid Username/Password",
-                        DynamicList = new { data = new User() }
-                    };
+                    authenticatedUser = UserDL.AuthenticateUser(user);
                 }
+
+                if (authenticatedUser != null)
+                {                    
+                    AuditTrail obj = new AuditTrail();
+                    obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UserLogin);
+                    obj.Details = JsonConvert.SerializeObject(authenticatedUser);
+                    obj.RequestedBy = authenticatedUser.Username;
+                    obj.RequestedOn = System.DateTime.Now;
+                    obj.ApprovedBy = authenticatedUser.Username;
+                    obj.ApprovedOn = System.DateTime.Now;
+                    obj.ClientIP = user.ClientIP;
+                    AuditTrailDL.Save(obj);
+
+                    authenticatedUser.Function = FunctionDL.RetrieveByRoleId(authenticatedUser.UserRole.Id);
+
+                    response.ErrorMsg = string.Empty;
+                    response.DynamicList = new { data = authenticatedUser };
+                }
+                else
+                {
+                    response.ErrorMsg = useActiveDirectory ? "Active Directory Authentication Failed. Invalid Username/Password!" : "Invalid Username/Password!";
+                    response.DynamicList = new { data = new User() };
+                }
+
+                return response;
             }
             catch (Exception ex)
             {

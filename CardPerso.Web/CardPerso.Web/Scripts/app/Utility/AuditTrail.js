@@ -107,6 +107,7 @@ function getPendingAudits() {
             },
             { "data": "Type" },
             { "data": "RequestedBy" },
+            { "data": "ClientIP" },
             { "data": "RequestedDate" },
             { "data": "ApprovedBy" },
             { "data": "ApprovedDate" },

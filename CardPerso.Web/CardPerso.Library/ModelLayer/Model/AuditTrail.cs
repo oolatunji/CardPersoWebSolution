@@ -24,6 +24,7 @@ namespace CardPerso.Library.ModelLayer.Model
             {
                 Id = Convert.ToInt32(record["ID"]),
                 Type = Convert.ToString(record["TYPE"]),
+                ClientIP = Convert.ToString(record["CLIENTIP"]),
                 Details = Convert.ToString(record["DETAILS"]),
                 RequestedBy = Convert.ToString(record["REQUESTEDBY"]),
                 RequestedDate = String.Format("{0:d/M/yyyy HH:mm:ss}", Convert.ToDateTime(record["REQUESTEDON"])),

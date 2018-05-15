@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace CardPerso.Web.Controllers
@@ -22,6 +23,8 @@ namespace CardPerso.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     Role roleObj = Mapper.Map<Role>(role);
+                    roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+
                     Response result = RolePL.Save(roleObj, role.LoggedInUser, false);
                     return Request.CreateResponse(HttpStatusCode.OK, result);
                 }
@@ -46,6 +49,8 @@ namespace CardPerso.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     Role roleObj = Mapper.Map<Role>(role);
+                    roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+
                     Response result = RolePL.Update(roleObj, role.LoggedInUser, false);
                     return Request.CreateResponse(HttpStatusCode.OK, result);
                 }

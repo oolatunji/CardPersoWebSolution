@@ -9,6 +9,7 @@ using System.Web.Http;
 using AutoMapper;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
+using System.Web;
 
 namespace CardPerso.Web.Controllers
 {
@@ -22,6 +23,8 @@ namespace CardPerso.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     Function functionObj = Mapper.Map<Function>(function);
+                    functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+
                     Response result = FunctionPL.Save(functionObj, function.LoggedInUser, false);
                     return Request.CreateResponse(HttpStatusCode.OK, result); 
                 }
@@ -46,6 +49,8 @@ namespace CardPerso.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     Function functionObj = Mapper.Map<Function>(function);
+                    functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+
                     Response result = FunctionPL.Update(functionObj, function.LoggedInUser, false);
                     return Request.CreateResponse(HttpStatusCode.OK, result); 
                 }

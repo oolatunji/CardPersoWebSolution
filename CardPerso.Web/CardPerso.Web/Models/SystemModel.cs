@@ -34,5 +34,23 @@ namespace CardPerso.Web.Models
         public string SmtpHost { get; set; }
         [Required]
         public string SmtpPort { get; set; }
+        [Required]
+        public string UsesActiveDirectory { get; set; }
+        [Required]
+        public string ADServer { get; set; }
+        [Required]
+        public string ADContainer { get; set; }
+        [Required]
+        public string ADUsername { get; set; }
+        [Required]
+        public string ADPassword { get; set; }
+        [Required]
+        public string ADServer2 { get; set; }
+        [Required]
+        public string ADContainer2 { get; set; }
+        [Required]
+        public string ADUsername2 { get; set; }
+        [Required]
+        public string ADPassword2 { get; set; }
     }
 }

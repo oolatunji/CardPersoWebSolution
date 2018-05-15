@@ -99,7 +99,15 @@ namespace CardPerso.Web
 
             bundles.Add(new ScriptBundle("~/bundles/audittrail").Include(
                       "~/Scripts/app/Utility/AuditTrail.js"
-                      ));  
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/addips").Include(
+                    "~/Scripts/app/IP/AddIP.js"
+                    ));
+
+            bundles.Add(new ScriptBundle("~/bundles/viewips").Include(
+                      "~/Scripts/app/IP/ViewIP.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                        "~/Content/bootstrap.min.css",

@@ -1,21 +1,6 @@
 ﻿$(document).ready(function () {
     try {
-        var currentUrl = window.location.href;
-        var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
-        var userFunctions = user.Function;
-
-        var exist = false;
-        $.each(userFunctions, function (key, userfunction) {
-            var link = settingsManager.websiteURL.trimRight('/') + userfunction.PageLink;
-            if (currentUrl == link) {
-                exist = true;
-            }
-        });
-
-        if (!exist)
-            window.location.href = '../System/UnAuthorized';
-        else
-            getFunctions();
+        getFunctions();
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "Functions Management");
     }
@@ -157,7 +142,7 @@ function format(d) {
 
 function update() {
 
-    try{
+    try {
         $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
         $("#updateBtn").attr("disabled", "disabled");
 
@@ -165,7 +150,7 @@ function update() {
         var pageLink = $('#pageLink').val();
         var id = $('#id').val();
         var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
-    
+
         var data = {
             Name: name,
             PageLink: pageLink,
@@ -187,7 +172,7 @@ function update() {
                 } else if (!_.isEmpty(response.ErrorMsg)) {
                     displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Functions Management");
                 }
-                $("#updateBtn").removeAttr("disabled");            
+                $("#updateBtn").removeAttr("disabled");
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             }
         });

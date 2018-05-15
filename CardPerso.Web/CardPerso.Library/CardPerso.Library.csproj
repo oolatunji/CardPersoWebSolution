@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,6 +57,7 @@
     <Compile Include="DataLayer\AuditTrailDL.cs" />
     <Compile Include="DataLayer\CardDL.cs" />
     <Compile Include="DataLayer\FunctionDL.cs" />
+    <Compile Include="DataLayer\IPDL.cs" />
     <Compile Include="DataLayer\OracleDL.cs" />
     <Compile Include="DataLayer\RoleDL.cs" />
     <Compile Include="DataLayer\RoleFunctionsDL.cs" />
@@ -67,12 +69,14 @@
     <Compile Include="ModelLayer\Model\BaseModel.cs" />
     <Compile Include="ModelLayer\Model\Card.cs" />
     <Compile Include="ModelLayer\Model\Function.cs" />
+    <Compile Include="ModelLayer\Model\IP.cs" />
     <Compile Include="ModelLayer\Model\Role.cs" />
     <Compile Include="ModelLayer\Model\RoleDto.cs" />
     <Compile Include="ModelLayer\Model\RoleFunctions.cs" />
     <Compile Include="ModelLayer\Model\SearhFilter.cs" />
     <Compile Include="ModelLayer\Model\SystemIdManager.cs" />
     <Compile Include="ModelLayer\Model\User.cs" />
+    <Compile Include="ModelLayer\Utility\ActiveDirectoryHelper.cs" />
     <Compile Include="ModelLayer\Utility\Base64Conversions.cs" />
     <Compile Include="ModelLayer\Utility\Crypter.cs" />
     <Compile Include="ModelLayer\Utility\ErrorHandler.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="ProcessLayer\AuditTrailPL.cs" />
     <Compile Include="ProcessLayer\CardPL.cs" />
     <Compile Include="ProcessLayer\FunctionPL.cs" />
+    <Compile Include="ProcessLayer\IPPL.cs" />
     <Compile Include="ProcessLayer\RolePL.cs" />
     <Compile Include="ProcessLayer\UserPL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

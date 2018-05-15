@@ -7,3 +7,6 @@ C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOr
 C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.csprojResolveAssemblyReference.cache
 C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.exe
 C:\Users\OLATUNJI\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.pdb
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\EFWithOracleTest.exe.config
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.exe
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.pdb

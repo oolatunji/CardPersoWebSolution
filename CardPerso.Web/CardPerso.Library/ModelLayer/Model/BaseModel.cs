@@ -10,5 +10,6 @@ namespace CardPerso.Library.ModelLayer.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ClientIP { get; set; }
     }
 }

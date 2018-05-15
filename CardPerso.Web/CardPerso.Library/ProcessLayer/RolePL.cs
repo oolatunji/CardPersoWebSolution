@@ -68,6 +68,7 @@ namespace CardPerso.Library.ProcessLayer
                                 obj.RequestedOn = System.DateTime.Now;
                                 obj.ApprovedBy = username;
                                 obj.ApprovedOn = System.DateTime.Now;
+                                obj.ClientIP = role.ClientIP;
                                 AuditTrailDL.Save(obj);
 
                                 return new Response
@@ -164,6 +165,8 @@ namespace CardPerso.Library.ProcessLayer
                             obj.RequestedOn = System.DateTime.Now;
                             obj.ApprovedBy = username;
                             obj.ApprovedOn = System.DateTime.Now;
+                            obj.ClientIP = role.ClientIP;
+
                             AuditTrailDL.Save(obj);
 
                             return new Response

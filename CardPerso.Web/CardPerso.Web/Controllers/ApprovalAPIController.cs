@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace CardPerso.Web.Controllers
@@ -106,6 +107,7 @@ namespace CardPerso.Web.Controllers
                 {
                     Approval approvalObj = Mapper.Map<Approval>(approval);
                     approvalObj.ApprovedOn = System.DateTime.Now;
+                    approvalObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
                     Response result = ApprovalPL.Update(approvalObj);
                     return Request.CreateResponse(HttpStatusCode.OK, result);
                 }

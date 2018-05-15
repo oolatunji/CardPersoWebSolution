@@ -20,13 +20,14 @@ namespace CardPerso.Library.DataLayer
             try
             {
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO SYSTEMAUDITTRAIL(TYPE, DETAILS, REQUESTEDBY, REQUESTEDON, APPROVEDBY, APPROVEDON) VALUES(:type, :details, :requestedby, :requestedon, :approvedby, :approvedon)";
+                cmd.CommandText = "INSERT INTO SYSTEMAUDITTRAIL(TYPE, DETAILS, REQUESTEDBY, REQUESTEDON, APPROVEDBY, APPROVEDON, CLIENTIP) VALUES(:type, :details, :requestedby, :requestedon, :approvedby, :approvedon, :clientip)";
                 cmd.Parameters.Add(":type", OracleDbType.Varchar2, audit.Type, ParameterDirection.Input);
                 cmd.Parameters.Add(":details", OracleDbType.Varchar2, audit.Details, ParameterDirection.Input);
                 cmd.Parameters.Add(":requestedby", OracleDbType.Varchar2, audit.RequestedBy, ParameterDirection.Input);
                 cmd.Parameters.Add(":requestedon", OracleDbType.Date, audit.RequestedOn, ParameterDirection.Input);
                 cmd.Parameters.Add(":approvedby", OracleDbType.Varchar2, audit.ApprovedBy, ParameterDirection.Input);
                 cmd.Parameters.Add(":approvedon", OracleDbType.Date, audit.ApprovedOn, ParameterDirection.Input);
+                cmd.Parameters.Add(":clientip", OracleDbType.Varchar2, audit.ClientIP, ParameterDirection.Input);
 
                 int rowsInserted = cmd.ExecuteNonQuery();
                 if (rowsInserted > 0)

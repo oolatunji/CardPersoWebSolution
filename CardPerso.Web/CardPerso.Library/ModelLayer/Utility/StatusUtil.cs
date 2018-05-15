@@ -26,6 +26,8 @@ namespace CardPerso.Library.ModelLayer.Utility
 
         public enum ApprovalType
         {
+            [Description("User Login")]
+            UserLogin,
             [Description("Create User")]
             CreateUser,
             [Description("Update User")]
@@ -33,11 +35,13 @@ namespace CardPerso.Library.ModelLayer.Utility
             [Description("Create Role")]
             CreateRole,
             [Description("Update Role")]
-            UpdateRole,
-            [Description("Create Function")]
-            CreateFunction,
-            [Description("Update Function")]
-            UpdateFunction,
+            UpdateRole,           
+            [Description("Create Allowed IP")]
+            CreateIP,
+            [Description("Update Allowed IP")]
+            UpdateIP,
+            [Description("Delete Allowed IP")]
+            DeleteIP,
             [Description("Reset Card Print Status")]
             ResetCardPrintStatus
         }
