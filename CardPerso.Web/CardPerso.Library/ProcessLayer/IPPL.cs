@@ -332,5 +332,28 @@ namespace CardPerso.Library.ProcessLayer
                 };
             }
         }
+
+        public static Response IPAddressExists(string ipAddress)
+        {
+            try
+            {
+                var ipAddressExists = IPDL.IPAddressExists(ipAddress);
+                return new Response
+                {
+                    ErrorMsg = ipAddressExists ? string.Empty : $"IP address: {ipAddress} not allowed.",
+                    DynamicList = new { data = ipAddressExists }
+                };
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.WriteError(ex);
+                return new Response
+                {
+                    SuccessMsg = string.Empty,
+                    ErrorMsg = ex.Message,
+                    DynamicList = new { data = new List<IP>() }
+                };
+            }
+        }
     }
 }
