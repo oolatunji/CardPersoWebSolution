@@ -79,6 +79,7 @@
     <Compile Include="ModelLayer\Utility\ActiveDirectoryHelper.cs" />
     <Compile Include="ModelLayer\Utility\Base64Conversions.cs" />
     <Compile Include="ModelLayer\Utility\Crypter.cs" />
+    <Compile Include="ModelLayer\Utility\DateUtil.cs" />
     <Compile Include="ModelLayer\Utility\ErrorHandler.cs" />
     <Compile Include="ModelLayer\Utility\Mail.cs" />
     <Compile Include="ModelLayer\Utility\MailHelper.cs" />

@@ -9,7 +9,7 @@ namespace CardPerso.Library.ModelLayer.Utility
 {
     public class QueryHelper
     {
-        private static readonly string sysFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+        static string dateFormat = "YYYY/MM/DD";
 
         public static string CustomApprovalSelectQuery(Dictionary<string, string> filters, string tablename)
         {
@@ -24,11 +24,11 @@ namespace CardPerso.Library.ModelLayer.Utility
                     {
                         if (column.Equals("REQUESTEDFROM"))
                         {
-                            query += string.Format(" WHERE REQUESTEDON >= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" WHERE REQUESTEDON >= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else if (column.Equals("REQUESTEDTO"))
                         {
-                            query += string.Format(" WHERE REQUESTEDON <= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" WHERE REQUESTEDON <= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else
                         {
@@ -40,11 +40,11 @@ namespace CardPerso.Library.ModelLayer.Utility
                     {
                         if (column.Equals("REQUESTEDFROM"))
                         {
-                            query += string.Format(" AND REQUESTEDON >= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" AND REQUESTEDON >= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else if (column.Equals("REQUESTEDTO"))
                         {
-                            query += string.Format(" AND REQUESTEDON <= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" AND REQUESTEDON <= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else
                         {
@@ -52,10 +52,7 @@ namespace CardPerso.Library.ModelLayer.Utility
                         }
                     }
                 });
-            }
-
-            ErrorHandler.WriteError(new Exception(sysFormat));            
-            ErrorHandler.WriteError(new Exception(query));
+            }           
 
             return query;
         }
@@ -73,11 +70,11 @@ namespace CardPerso.Library.ModelLayer.Utility
                     {
                         if (column.Equals("REQUESTEDFROM"))
                         {
-                            query += string.Format(" WHERE DATEOFRECORD >= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" WHERE DATEOFRECORD >= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else if (column.Equals("REQUESTEDTO"))
                         {
-                            query += string.Format(" WHERE DATEOFRECORD <= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" WHERE DATEOFRECORD <= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else
                         {
@@ -89,11 +86,11 @@ namespace CardPerso.Library.ModelLayer.Utility
                     {
                         if (column.Equals("REQUESTEDFROM"))
                         {
-                            query += string.Format(" AND DATEOFRECORD >= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" AND DATEOFRECORD >= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else if (column.Equals("REQUESTEDTO"))
                         {
-                            query += string.Format(" AND DATEOFRECORD <= TO_DATE('{0}','{1} HH24:MI:SS')", filters[column], sysFormat);
+                            query += string.Format(" AND DATEOFRECORD <= TO_DATE('{0}','{1}')", filters[column], dateFormat);
                         }
                         else
                         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CardPerso.Library.ModelLayer.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace CardPerso.Library.ModelLayer.Model
         public string RequestedBy { get; set; }
         public string ApprovedBy { get; set; }
         public string Status { get; set; }
-        public DateTime? RequestedFrom { get; set; }
-        public DateTime? RequestedTo { get; set; }
+        public DateUtil RequestedFrom { get; set; }
+        public DateUtil RequestedTo { get; set; }
     }
 }

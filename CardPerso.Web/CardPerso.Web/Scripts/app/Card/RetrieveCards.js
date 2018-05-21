@@ -90,8 +90,8 @@ function getLatestCards() {
             "data": function (d) {
                 d.RequestedBy = $('#requestedby').val();
                 d.Status = $('#status').val();
-                d.RequestedFrom = $('#requestedFrom').val();
-                d.RequestedTo = $('#requestedTo').val();
+                d.RequestedFrom = $('#requestedFrom').val().toDate();
+                d.RequestedTo = $('#requestedTo').val().toDate();
             },
         },
 
@@ -328,3 +328,53 @@ function update() {
         $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
     }
 }
+
+String.prototype.toDate = function () {
+
+    var date = this;
+    if (date.length != 0) {
+
+        var formatedDate = null;
+        var formatLowerCase = 'mm/dd/yyyy';
+        var formatItems = formatLowerCase.split('/');
+        var dateItems = date.split('/');
+        var monthIndex = formatItems.indexOf("mm");
+        var monthNameIndex = formatItems.indexOf("mmm");
+        var dayIndex = formatItems.indexOf("dd");
+        var yearIndex = formatItems.indexOf("yyyy");
+        var d = dateItems[dayIndex];
+
+        if (d < 10) {
+            d = "0" + d;
+        }
+
+        if (monthIndex > -1) {
+            var month = parseInt(dateItems[monthIndex]);
+            if (month < 10) {
+                month = "0" + month;
+            }
+        } else if (monthNameIndex > -1) {
+            var monthName = dateItems[monthNameIndex];
+            month = getMonthIndex(monthName);
+            if (month < 10) {
+                month = "0" + month;
+            }
+        }
+
+        return {
+            Day: parseInt(d),
+            Month: parseInt(month),
+            Year: parseInt(dateItems[yearIndex])
+        };
+
+    } else {
+
+        var d = new Date();
+        return {
+            Day: d.getDate(),
+            Month: d.getMonth() + 1,
+            Year: d.getFullYear()
+        };
+
+    }
+};

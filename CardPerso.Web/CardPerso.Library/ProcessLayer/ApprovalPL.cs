@@ -55,13 +55,13 @@ namespace CardPerso.Library.ProcessLayer
                 {
                     filters.Add("STATUS", filter.Status);
                 }
-                if (filter.RequestedFrom.HasValue)
+                if (filter.RequestedFrom != null)
                 {
-                    filters.Add("REQUESTEDFROM", filter.RequestedFrom.Value.ToString());
+                    filters.Add("REQUESTEDFROM", DateUtil.GetDate(filter.RequestedFrom, false));
                 }
-                if (filter.RequestedTo.HasValue)
+                if (filter.RequestedTo != null)
                 {
-                    filters.Add("REQUESTEDTO", filter.RequestedTo.Value.AddHours(23).ToString());
+                    filters.Add("REQUESTEDTO", DateUtil.GetDate(filter.RequestedTo, true));
                 }
 
                 var approvals = ApprovalDL.RetrieveFilteredApprovals(filters);
