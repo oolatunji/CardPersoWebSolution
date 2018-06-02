@@ -64,6 +64,7 @@ namespace CardPerso.Library.ModelLayer.Utility
                 body = body.Replace("#Username", userUsername);
                 body = body.Replace("#Password", userPassword);
                 body = body.Replace("#Role", userRole);
+                body = body.Replace("#Branch", user.BranchName);
                 body = body.Replace("#WebsiteUrl", websiteUrl);
 
                 Thread email = new Thread(delegate()

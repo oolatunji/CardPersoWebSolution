@@ -3,7 +3,7 @@ $(document).ready(function () {
     try{
         var encncryptedUsername = getQueryStringValue("rq");
         if (encncryptedUsername != "") {
-            var data = { Username: encncryptedUsername };
+            var data = { Username: encncryptedUsername, Password: 'na' };
             $.ajax({
                 url: settingsManager.websiteURL + 'api/UserAPI/ConfirmUsername',
                 type: 'POST',

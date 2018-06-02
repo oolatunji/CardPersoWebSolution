@@ -96,7 +96,7 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             return new Response
                             {
-                                SuccessMsg = "Card record successfully logged for approval",
+                                SuccessMsg = "Update card print status request was successfully logged for approval",
                                 ErrorMsg = string.Empty
                             };
                         }
@@ -125,7 +125,7 @@ namespace CardPerso.Library.ProcessLayer
 
                             return new Response
                             {
-                                SuccessMsg = "Card record updated successfully",
+                                SuccessMsg = "Card print status was updated successfully",
                                 ErrorMsg = string.Empty
                             };
                         }
@@ -145,7 +145,7 @@ namespace CardPerso.Library.ProcessLayer
                     {
                         return new Response
                         {
-                            SuccessMsg = "Card record updated successfully",
+                            SuccessMsg = "Card print status was updated successfully",
                             ErrorMsg = string.Empty
                         };
                     }

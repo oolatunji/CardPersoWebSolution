@@ -18,7 +18,6 @@
         else {
             $('#userRole').html('<option>Loading Roles...</option>');
             $('#userRole').prop('disabled', 'disabled');
-
             //Get Roles
             $.ajax({
                 url: settingsManager.websiteURL + 'api/RoleAPI/RetrieveRoles',
@@ -36,6 +35,29 @@
                     });
                 },
                 error: function (xhr) {
+                    displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
+                }
+            });           
+
+            $('#userBranch').html('<option>Loading Branches...</option>');
+            $('#userBranch').prop('disabled', 'disabled');
+            //Get Branches
+            $.ajax({
+                url: settingsManager.websiteURL + 'api/BranchAPI/RetrieveBranches',
+                type: 'GET',
+                async: true,
+                cache: false,
+                success: function (response) {
+                    $('#userBranch').html('');
+                    $('#userBranch').prop('disabled', false);
+                    $('#userBranch').append('<option value="">Select Branch</option>');
+                    var roles = response.data;
+                    var html = '';
+                    $.each(roles, function (key, value) {
+                        $('#userBranch').append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                    });
+                },
+                error: function (xhr) {                    
                     displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
                 }
             });
@@ -65,6 +87,8 @@ function addUser() {
         var username = $('#username').val();
         var userRole = $('#userRole').val();
         var userRoleName = $('#userRole option:selected').html();
+        var userBranch = $('#userBranch').val();
+        var userBranchName = $('#userBranch option:selected').html();
         var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
 
         var data = {
@@ -73,10 +97,12 @@ function addUser() {
             Gender: gender,
             Email: email,
             Username: username,
-            RoleId: userRole,
+            RoleId: userRole != "" ? parseInt(userRole) : 0,
             LoggedInUser: loggedInUsername,
-            RoleName: userRoleName
-        };
+            RoleName: userRoleName,
+            BranchId: userRole != "" ? parseInt(userBranch): 0,
+            BranchName: userBranchName
+        };        
 
         $.ajax({
             url: settingsManager.websiteURL + 'api/UserAPI/SaveUser',
@@ -95,11 +121,18 @@ function addUser() {
                     $('#emailAddress').val('');
                     $('#username').val('');
                     $('#userRole').val('');
+                    $('#userBranch').val('');
 
                 } else if (!_.isEmpty(response.ErrorMsg)) {
                     displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "User Management");
                 }
 
+                $("#addBtn").removeAttr("disabled");
+                $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+            },
+            error: function (xhr) {                
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "User Management");
                 $("#addBtn").removeAttr("disabled");
                 $('#addBtn').html('<i class="fa fa-cog"></i> Add');
             }

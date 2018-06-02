@@ -20,21 +20,13 @@ namespace CardPerso.Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    User user = Mapper.Map<User>(model);
-                    user.CreatedOn = System.DateTime.Now;
-                    user.Password = System.Web.Security.Membership.GeneratePassword(6, 0);
-                    user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                User user = Mapper.Map<User>(model);
+                user.CreatedOn = System.DateTime.Now;
+                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                user.Password = System.Web.Security.Membership.GeneratePassword(6, 0);
 
-                    Response result = UserPL.Save(user, model.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = UserPL.Save(user, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -48,19 +40,11 @@ namespace CardPerso.Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    User user = Mapper.Map<User>(model);
-                    user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                User user = Mapper.Map<User>(model);
+                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = UserPL.Update(user, model.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = UserPL.Update(user, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -74,17 +58,9 @@ namespace CardPerso.Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    User user = Mapper.Map<User>(model);
-                    Response result = UserPL.UpdatePassword(user);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                User user = Mapper.Map<User>(model);
+                Response result = UserPL.UpdatePassword(user);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -149,9 +125,9 @@ namespace CardPerso.Web.Controllers
             try
             {
                 User user = Mapper.Map<User>(model);
-                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                user.ClientIP = HttpContext.Current.Request.UserHostAddress;                
 
-                Response authenticatedUser = UserPL.AuthenticateUser(user);
+                Response authenticatedUser = UserPL.AuthenticateUser(user, true);
                 return Request.CreateResponse(HttpStatusCode.OK, authenticatedUser);
             }
             catch (Exception ex)

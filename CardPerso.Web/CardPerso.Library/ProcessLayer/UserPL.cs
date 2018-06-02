@@ -94,7 +94,7 @@ namespace CardPerso.Library.ProcessLayer
                             {
                                 return new Response
                                 {
-                                    SuccessMsg = "User successfully logged for approval",
+                                    SuccessMsg = "Add User request was successfully logged for approval",
                                     ErrorMsg = string.Empty
                                 };
                             }
@@ -191,7 +191,7 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             return new Response
                             {
-                                SuccessMsg = "User successfully logged for approval",
+                                SuccessMsg = "Update User request was successfully logged for approval",
                                 ErrorMsg = string.Empty
                             };
                         }
@@ -319,7 +319,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response AuthenticateUser(User user)
+        public static Response AuthenticateUser(User user, bool auditAction)
         {
             try
             {
@@ -340,20 +340,24 @@ namespace CardPerso.Library.ProcessLayer
                 }
                 else
                 {
+                    user.Password = PasswordHash.MD5Hash(user.Password);
                     authenticatedUser = UserDL.AuthenticateUser(user);
                 }
 
                 if (authenticatedUser != null)
-                {                    
-                    AuditTrail obj = new AuditTrail();
-                    obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UserLogin);
-                    obj.Details = JsonConvert.SerializeObject(authenticatedUser);
-                    obj.RequestedBy = authenticatedUser.Username;
-                    obj.RequestedOn = System.DateTime.Now;
-                    obj.ApprovedBy = authenticatedUser.Username;
-                    obj.ApprovedOn = System.DateTime.Now;
-                    obj.ClientIP = user.ClientIP;
-                    AuditTrailDL.Save(obj);
+                {               
+                    if(auditAction)
+                    {
+                        AuditTrail obj = new AuditTrail();
+                        obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UserLogin);
+                        obj.Details = JsonConvert.SerializeObject(authenticatedUser);
+                        obj.RequestedBy = authenticatedUser.Username;
+                        obj.RequestedOn = System.DateTime.Now;
+                        obj.ApprovedBy = authenticatedUser.Username;
+                        obj.ApprovedOn = System.DateTime.Now;
+                        obj.ClientIP = user.ClientIP;
+                        AuditTrailDL.Save(obj);
+                    }                        
 
                     authenticatedUser.Function = FunctionDL.RetrieveByRoleId(authenticatedUser.UserRole.Id);
 

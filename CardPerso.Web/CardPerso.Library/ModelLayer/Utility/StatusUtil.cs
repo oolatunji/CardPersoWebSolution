@@ -28,6 +28,12 @@ namespace CardPerso.Library.ModelLayer.Utility
         {
             [Description("User Login")]
             UserLogin,
+            [Description("Print Utility User Login")]
+            PrintUtilityUserLogin,
+            [Description("Create Branch")]
+            CreateBranch,
+            [Description("Update Branch")]
+            UpdateBranch,
             [Description("Create User")]
             CreateUser,
             [Description("Update User")]
@@ -43,7 +49,9 @@ namespace CardPerso.Library.ModelLayer.Utility
             [Description("Delete Allowed IP")]
             DeleteIP,
             [Description("Reset Card Print Status")]
-            ResetCardPrintStatus
+            ResetCardPrintStatus,
+            [Description("Inserted Print Records")]
+            InsertedPrintRecords
         }
 
         public static string GetDescription(Enum en)

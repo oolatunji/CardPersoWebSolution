@@ -1,6 +1,10 @@
-﻿using CardPerso.Library.ModelLayer.Model;
+﻿using CardPerso.Library.DataLayer;
+using CardPerso.Library.ModelLayer.Model;
+using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
+using CardPerso.Web.Models;
 using CardPerso.Web.Responses;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,16 +31,9 @@ namespace CardPerso.Web
         {
             var response = new AuthenticationResponse();
 
-            var user = new User
-            {
-                Username = username,
-                Password = password
-            };
+            var ip = HttpContext.Current.Request.UserHostAddress;                  
 
-            var validatedUser = UserPL.AuthenticateUser(user);
-
-            response.IsSuccessful = string.IsNullOrEmpty(validatedUser.ErrorMsg) ? true : false;
-            response.FailureReason = string.IsNullOrEmpty(validatedUser.ErrorMsg) ? string.Empty : validatedUser.ErrorMsg;
+            response = ValidateUserandIP(username, password, ip);
 
             return response;
         }
@@ -46,16 +43,78 @@ namespace CardPerso.Web
         {
             var response = new AuthenticationResponse();
 
-            var validatedIP = IPPL.IPAddressExists(ipAddress);
+            var callingIP = HttpContext.Current.Request.UserHostAddress;
 
-            response.IsSuccessful = string.IsNullOrEmpty(validatedIP.ErrorMsg) ? true : false;
-            response.FailureReason = string.IsNullOrEmpty(validatedIP.ErrorMsg) ? string.Empty : validatedIP.ErrorMsg;
+            var validatedCallingIP = IPPL.IPAddressExists(callingIP);
 
+            if(string.IsNullOrEmpty(validatedCallingIP.ErrorMsg))
+            {
+                var validatedIP = IPPL.IPAddressExists(ipAddress);
+
+                response.IsSuccessful = string.IsNullOrEmpty(validatedIP.ErrorMsg) ? true : false;
+                response.FailureReason = string.IsNullOrEmpty(validatedIP.ErrorMsg) ? string.Empty : validatedIP.ErrorMsg;
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.FailureReason = $"Calling IP address: {callingIP} is not allowed.";
+            }
+           
             return response;
         }
 
         [WebMethod]
-        public AuthenticationResponse ValidateUserandIP(string username, string password, string ipAddress)
+        public AuditResponse AuditCardAccountRequestAction(string pan, string printedName, string userPrinting, string clientIP)
+        {
+            var response = new AuditResponse();
+
+            var callingIP = HttpContext.Current.Request.UserHostAddress;
+
+            var validatedCallingIP = IPPL.IPAddressExists(callingIP);
+
+            if (string.IsNullOrEmpty(validatedCallingIP.ErrorMsg))
+            {
+                var validatedIP = IPPL.IPAddressExists(clientIP);
+
+                if (string.IsNullOrEmpty(validatedIP.ErrorMsg))
+                {
+                    var cardModel = new PrintedCardModel
+                    {
+                        Pan = Crypter.Mask(pan),
+                        PrintedName = printedName,
+                        UserPrinting = userPrinting
+                    };
+
+                    AuditTrail obj = new AuditTrail();
+                    obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.InsertedPrintRecords);
+                    obj.Details = JsonConvert.SerializeObject(cardModel);
+                    obj.RequestedBy = userPrinting;
+                    obj.RequestedOn = System.DateTime.Now;
+                    obj.ApprovedBy = userPrinting;
+                    obj.ApprovedOn = System.DateTime.Now;
+                    obj.ClientIP = clientIP;
+                    AuditTrailDL.Save(obj);
+
+                    response.IsSuccessful = true;
+                    response.FailureReason = string.Empty;
+                }
+                else
+                {
+                    response.IsSuccessful = true;
+                    response.FailureReason = $"Client IP: {clientIP} is not allowed.";
+                }                                   
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.FailureReason = $"Calling IP address: {callingIP} is not allowed.";
+            }
+
+            return response;
+        }
+
+        //[WebMethod]
+        private AuthenticationResponse ValidateUserandIP(string username, string password, string ipAddress)
         {
             var response = new AuthenticationResponse();
 
@@ -65,7 +124,7 @@ namespace CardPerso.Web
                 Password = password
             };
 
-            var validatedUser = UserPL.AuthenticateUser(user);
+            var validatedUser = UserPL.AuthenticateUser(user, false);
 
             var validatedIP = IPPL.IPAddressExists(ipAddress);
 
@@ -73,6 +132,16 @@ namespace CardPerso.Web
             {
                 response.IsSuccessful = true;
                 response.FailureReason = string.Empty;
+
+                AuditTrail obj = new AuditTrail();
+                obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.PrintUtilityUserLogin);
+                obj.Details = JsonConvert.SerializeObject(user);
+                obj.RequestedBy = user.Username;
+                obj.RequestedOn = System.DateTime.Now;
+                obj.ApprovedBy = user.Username;
+                obj.ApprovedOn = System.DateTime.Now;
+                obj.ClientIP = ipAddress;
+                AuditTrailDL.Save(obj);
             }
             else if (!string.IsNullOrEmpty(validatedUser.ErrorMsg) && string.IsNullOrEmpty(validatedIP.ErrorMsg))
             {

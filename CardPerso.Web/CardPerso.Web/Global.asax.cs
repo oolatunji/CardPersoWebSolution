@@ -28,6 +28,7 @@ namespace CardPerso.Web
             Mapper.CreateMap<UserModel, User>();
             Mapper.CreateMap<PasswordModel, User>();
             Mapper.CreateMap<CardModel, Card>();
+            Mapper.CreateMap<BranchModel, Branch>();
             Mapper.CreateMap<IPModel, IP>();
             Mapper.CreateMap<ApprovalModel, Approval>();
             Mapper.CreateMap<SearchFilterModel, SearhFilter>();

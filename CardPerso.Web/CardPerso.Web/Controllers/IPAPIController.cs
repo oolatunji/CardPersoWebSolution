@@ -16,23 +16,15 @@ namespace CardPerso.Web.Controllers
     public class IPAPIController : ApiController
     {
         [HttpPost]
-        public HttpResponseMessage SaveIP([FromBody]IPModel ip)
+        public HttpResponseMessage SaveIP([FromBody]IPModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var ipObj = Mapper.Map<IP>(ip);
-                    ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                var ipObj = Mapper.Map<IP>(model);
+                ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = IPPL.Save(ipObj, ip.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = IPPL.Save(ipObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -42,23 +34,15 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateIP([FromBody]IPModel ip)
+        public HttpResponseMessage UpdateIP([FromBody]IPModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var ipObj = Mapper.Map<IP>(ip);
-                    ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                var ipObj = Mapper.Map<IP>(model);
+                ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = IPPL.Update(ipObj, ip.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = IPPL.Update(ipObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -68,23 +52,15 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage DeleteIP([FromBody]IPModel ip)
+        public HttpResponseMessage DeleteIP([FromBody]IPModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var ipObj = Mapper.Map<IP>(ip);
-                    ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                var ipObj = Mapper.Map<IP>(model);
+                ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = IPPL.Delete(ipObj, ip.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = IPPL.Delete(ipObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

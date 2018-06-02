@@ -44,7 +44,7 @@ namespace CardPerso.Library.ProcessLayer
                             {
                                 return new Response
                                 {
-                                    SuccessMsg = "Role successfully logged for approval",
+                                    SuccessMsg = "Add Role request was successfully logged for approval",
                                     ErrorMsg = string.Empty
                                 };
                             }
@@ -141,7 +141,7 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             return new Response
                             {
-                                SuccessMsg = "Role successfully logged for approval",
+                                SuccessMsg = "Update Role request was successfully logged for approval",
                                 ErrorMsg = string.Empty
                             };
                         }

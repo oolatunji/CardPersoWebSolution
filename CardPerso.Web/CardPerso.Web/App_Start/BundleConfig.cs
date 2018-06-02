@@ -61,6 +61,14 @@ namespace CardPerso.Web
                       "~/Scripts/app/Role/ViewRole.js"
                       ));
 
+            bundles.Add(new ScriptBundle("~/bundles/addbranches").Include(
+                     "~/Scripts/app/Branch/AddBranch.js"
+                     ));
+
+            bundles.Add(new ScriptBundle("~/bundles/viewbranches").Include(
+                      "~/Scripts/app/Branch/ViewBranch.js"
+                      ));
+
             bundles.Add(new ScriptBundle("~/bundles/addusers").Include(
                      "~/Scripts/app/User/AddUser.js"
                      ));

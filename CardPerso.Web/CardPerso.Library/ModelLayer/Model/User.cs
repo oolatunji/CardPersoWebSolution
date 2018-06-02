@@ -15,14 +15,17 @@ namespace CardPerso.Library.ModelLayer.Model
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public Int32 RoleId { get; set; }
+        public int RoleId { get; set; }
+        public int BranchId { get; set; }
         public string RoleName { get; set; }
+        public string BranchName { get; set; }
         public Role UserRole { get; set; }
+        public Branch UserBranch { get; set; }
         public DateTime CreatedOn { get; set; }
         public List<Function> Function { get; set; }
 
         public static User Transform(OracleDataReader record)
-        {
+        {            
             return new User
             {
                 Id = Convert.ToInt32(record["ID"]),
@@ -33,7 +36,8 @@ namespace CardPerso.Library.ModelLayer.Model
                 Username = Convert.ToString(record["USERNAME"]),
                 Password = Convert.ToString(record["PASSWORD"]),
                 UserRole = Role.Transform(record, false),
-                CreatedOn = Convert.ToDateTime(record["CREATEDON"]),
+                UserBranch = Branch.TransformBranch(record),
+                CreatedOn = Convert.ToDateTime(record["CREATEDON"]),                
             };
         }
     }

@@ -16,23 +16,15 @@ namespace CardPerso.Web.Controllers
     public class FunctionAPIController : ApiController
     {
         [HttpPost]
-        public HttpResponseMessage SaveFunction([FromBody]FunctionModel function)
+        public HttpResponseMessage SaveFunction([FromBody]FunctionModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Function functionObj = Mapper.Map<Function>(function);
-                    functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                Function functionObj = Mapper.Map<Function>(model);
+                functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = FunctionPL.Save(functionObj, function.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result); 
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors});
-                }
+                Response result = FunctionPL.Save(functionObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -42,23 +34,15 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateFunction([FromBody]FunctionModel function)
+        public HttpResponseMessage UpdateFunction([FromBody]FunctionModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Function functionObj = Mapper.Map<Function>(function);
-                    functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                Function functionObj = Mapper.Map<Function>(model);
+                functionObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = FunctionPL.Update(functionObj, function.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result); 
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = FunctionPL.Update(functionObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

@@ -2,10 +2,10 @@
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
-        var userIP = user.Function;
+        var userFunctions = user.Function;
 
         var exist = false;
-        $.each(userIP, function (key, userfunction) {
+        $.each(userFunctions, function (key, userfunction) {
             var link = settingsManager.websiteURL.trimRight('/') + userfunction.PageLink;
             if (currentUrl == link) {
                 exist = true;
@@ -163,7 +163,7 @@ function format(d) {
             '<td><input class="form-control" placeholder="Enter Page Link" id="ipAddress" value="' + d.IPAddress + '"/></td>' +
         '</tr>' +
         '<tr>' +
-            '<td style="color:navy;width:20%;font-family:Arial;">IP Address:</td>' +
+            '<td style="color:navy;width:20%;font-family:Arial;">Description:</td>' +
             '<td><input class="form-control" placeholder="Enter Page Link" id="description" value="' + d.Description + '"/></td>' +
         '</tr>' +
         '<tr>' +
@@ -213,6 +213,12 @@ function updateIP() {
                 }
                 $("#updateBtn").removeAttr("disabled");
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Allowed IP Management");
+                $("#updateBtn").removeAttr("disabled");
+                $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             }
         });
     } catch (err) {
@@ -248,6 +254,10 @@ function deleteIP(ip) {
                 } else if (!_.isEmpty(response.ErrorMsg)) {
                     displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Allowed IP Management");
                 }               
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Allowed IP Management");               
             }
         });
     } catch (err) {

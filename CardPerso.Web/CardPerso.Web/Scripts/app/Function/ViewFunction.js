@@ -174,6 +174,12 @@ function update() {
                 }
                 $("#updateBtn").removeAttr("disabled");
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Functions Management");
+                $("#updateBtn").removeAttr("disabled");
+                $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             }
         });
     } catch (err) {

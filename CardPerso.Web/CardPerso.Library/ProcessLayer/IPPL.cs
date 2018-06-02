@@ -44,7 +44,7 @@ namespace CardPerso.Library.ProcessLayer
                             {
                                 return new Response
                                 {
-                                    SuccessMsg = "IP successfully logged for approval",
+                                    SuccessMsg = "Add IP request was successfully logged for approval",
                                     ErrorMsg = string.Empty
                                 };
                             }
@@ -141,7 +141,7 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             return new Response
                             {
-                                SuccessMsg = "IP successfully logged for approval",
+                                SuccessMsg = "Update IP request was successfully logged for approval",
                                 ErrorMsg = string.Empty
                             };
                         }
@@ -237,7 +237,7 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             return new Response
                             {
-                                SuccessMsg = "IP successfully logged for approval",
+                                SuccessMsg = "Delete IP request was successfully logged for approval",
                                 ErrorMsg = string.Empty
                             };
                         }

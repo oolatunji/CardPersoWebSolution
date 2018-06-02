@@ -72,3 +72,8 @@ C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.W
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\obj\Debug\CardPerso.Web.csprojResolveAssemblyReference.cache
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\obj\Debug\CardPerso.Web.dll
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\obj\Debug\CardPerso.Web.pdb
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\bin\FluentValidation.dll
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\bin\FluentValidation.WebApi.dll
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\bin\System.ComponentModel.Primitives.dll
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\bin\FluentValidation.xml
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Web\bin\FluentValidation.WebApi.xml

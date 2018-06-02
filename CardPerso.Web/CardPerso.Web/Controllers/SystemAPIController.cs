@@ -49,70 +49,62 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage ConfigureSystem([FromBody]SystemModel systemModel)
+        public HttpResponseMessage ConfigureSystem([FromBody]SystemModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    string errMsg = "";
+                string errMsg = "";
 
-                    //Configure JS File used by all APIs (configFile.js)
-                    string configFilepath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Scripts/app/Utility/configFile.js");
-                    string jsSettings = "var settingsManager = {\"websiteURL\": \"" + systemModel.WebsiteUrl + "\"};";
+                //Configure JS File used by all APIs (configFile.js)
+                string configFilepath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Scripts/app/Utility/configFile.js");
+                string jsSettings = "var settingsManager = {\"websiteURL\": \"" + model.WebsiteUrl + "\"};";
 
-                    var lines = File.ReadAllLines(configFilepath);
-                    lines[0] = jsSettings;
-                    File.WriteAllLines(configFilepath, lines);
+                var lines = File.ReadAllLines(configFilepath);
+                lines[0] = jsSettings;
+                File.WriteAllLines(configFilepath, lines);
 
 
-                    var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+                var configuration = WebConfigurationManager.OpenWebConfiguration("~");
 
-                    var appSettingsSection = (AppSettingsSection)configuration.GetSection("appSettings");
-                    appSettingsSection.Settings["Organization"].Value = systemModel.Organization;
-                    appSettingsSection.Settings["ApplicationName"].Value = systemModel.ApplicationName;
-                    appSettingsSection.Settings["WebsiteUrl"].Value = systemModel.WebsiteUrl;
-                    appSettingsSection.Settings["OracleDBHost"].Value = systemModel.OracleDBHost;
-                    appSettingsSection.Settings["OracleDBPort"].Value = systemModel.OracleDBPort;
-                    appSettingsSection.Settings["OracleDBServiceName"].Value = systemModel.OracleDBServiceName;
-                    appSettingsSection.Settings["OracleDBUserId"].Value = systemModel.OracleDBUserId;
-                    appSettingsSection.Settings["OracleDBPassword"].Value = systemModel.OracleDBPassword;
-                    appSettingsSection.Settings["OracleConnectionString"].Value = GetConnectionString(systemModel);
+                var appSettingsSection = (AppSettingsSection)configuration.GetSection("appSettings");
+                appSettingsSection.Settings["Organization"].Value = model.Organization;
+                appSettingsSection.Settings["ApplicationName"].Value = model.ApplicationName;
+                appSettingsSection.Settings["WebsiteUrl"].Value = model.WebsiteUrl;
+                appSettingsSection.Settings["OracleDBHost"].Value = model.OracleDBHost;
+                appSettingsSection.Settings["OracleDBPort"].Value = model.OracleDBPort;
+                appSettingsSection.Settings["OracleDBServiceName"].Value = model.OracleDBServiceName;
+                appSettingsSection.Settings["OracleDBUserId"].Value = model.OracleDBUserId;
+                appSettingsSection.Settings["OracleDBPassword"].Value = model.OracleDBPassword;
+                appSettingsSection.Settings["OracleConnectionString"].Value = GetConnectionString(model);
 
-                    var mailHelperSection = (MailHelper)configuration.GetSection("mailHelperSection");
-                    mailHelperSection.Mail.FromEmailAddress = systemModel.FromEmailAddress;
-                    mailHelperSection.Mail.Username = systemModel.SmtpUsername;
-                    mailHelperSection.Mail.Password = systemModel.SmtpPassword;
-                    mailHelperSection.Smtp.Host = systemModel.SmtpHost;
-                    mailHelperSection.Smtp.Port = systemModel.SmtpPort;
+                var mailHelperSection = (MailHelper)configuration.GetSection("mailHelperSection");
+                mailHelperSection.Mail.FromEmailAddress = model.FromEmailAddress;
+                mailHelperSection.Mail.Username = model.SmtpUsername;
+                mailHelperSection.Mail.Password = model.SmtpPassword;
+                mailHelperSection.Smtp.Host = model.SmtpHost;
+                mailHelperSection.Smtp.Port = model.SmtpPort;
 
-                    var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
-                    activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory = systemModel.UsesActiveDirectory;
-                    activeDirectoryHelperSection.ActiveDirectory.ADServer = systemModel.ADServer;
-                    activeDirectoryHelperSection.ActiveDirectory.ADContainer = systemModel.ADContainer;
-                    activeDirectoryHelperSection.ActiveDirectory.ADUsername = systemModel.ADUsername;
-                    activeDirectoryHelperSection.ActiveDirectory.ADPassword = systemModel.ADPassword;
-                    activeDirectoryHelperSection.ActiveDirectory.ADServer2 = systemModel.ADServer2;
-                    activeDirectoryHelperSection.ActiveDirectory.ADContainer2 = systemModel.ADContainer2;
-                    activeDirectoryHelperSection.ActiveDirectory.ADUsername2 = systemModel.ADUsername2;
-                    activeDirectoryHelperSection.ActiveDirectory.ADPassword2 = systemModel.ADPassword2;
+                var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
+                activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory = model.UsesActiveDirectory;
+                activeDirectoryHelperSection.ActiveDirectory.ADServer = model.ADServer;
+                activeDirectoryHelperSection.ActiveDirectory.ADContainer = model.ADContainer;
+                activeDirectoryHelperSection.ActiveDirectory.ADUsername = model.ADUsername;
+                activeDirectoryHelperSection.ActiveDirectory.ADPassword = model.ADPassword;
+                activeDirectoryHelperSection.ActiveDirectory.ADServer2 = model.ADServer2;
+                activeDirectoryHelperSection.ActiveDirectory.ADContainer2 = model.ADContainer2;
+                activeDirectoryHelperSection.ActiveDirectory.ADUsername2 = model.ADUsername2;
+                activeDirectoryHelperSection.ActiveDirectory.ADPassword2 = model.ADPassword2;
 
-                    configuration.Save();
+                configuration.Save();
 
-                    bool result = true;
+                bool result = true;
 
-                    if (string.IsNullOrEmpty(errMsg))
-                        return result.Equals(true) ? Request.CreateResponse(HttpStatusCode.OK, "Successful") : Request.CreateResponse(HttpStatusCode.BadRequest, "Request failed");
-                    else
-                    {
-                        var response = Request.CreateResponse(HttpStatusCode.BadRequest, errMsg);
-                        return response;
-                    }
-                }
+                if (string.IsNullOrEmpty(errMsg))
+                    return result.Equals(true) ? Request.CreateResponse(HttpStatusCode.OK, "Successful") : Request.CreateResponse(HttpStatusCode.BadRequest, "Request failed");
                 else
                 {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, errors);
+                    var response = Request.CreateResponse(HttpStatusCode.BadRequest, errMsg);
+                    return response;
                 }
             }
             catch (Exception ex)

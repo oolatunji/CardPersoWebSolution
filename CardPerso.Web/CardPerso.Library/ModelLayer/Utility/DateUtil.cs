@@ -16,11 +16,13 @@ namespace CardPerso.Library.ModelLayer.Utility
         {
             if (addDay)
             {
-                return $"{dateUtil.Year}/{dateUtil.Month}/{dateUtil.Day + 1}";
+                var date = new DateTime(dateUtil.Year, dateUtil.Month, dateUtil.Day).AddHours(23);
+                return String.Format("{0:yyyy/MM/dd HH:mm:ss}", date);                
             }
             else
             {
-                return $"{dateUtil.Year}/{dateUtil.Month}/{dateUtil.Day}";
+                var date = new DateTime(dateUtil.Year, dateUtil.Month, dateUtil.Day);
+                return String.Format("{0:yyyy/MM/dd HH:mm:ss}", date.Date);
             }            
         }
     }

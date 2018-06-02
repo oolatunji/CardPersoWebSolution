@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation.WebApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Formatting;
@@ -14,6 +15,10 @@ namespace CardPerso.Web
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            // Add Custom validation filters  
+            config.Filters.Add(new ValidateModelStateFilter());
+            FluentValidationModelValidatorProvider.Configure(config);
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApiWithExtensions",

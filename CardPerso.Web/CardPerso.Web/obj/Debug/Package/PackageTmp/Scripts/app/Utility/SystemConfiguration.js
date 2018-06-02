@@ -145,14 +145,11 @@ function configure() {
                         
                     },
                     error: function (xhr) {
-                        if (xhr.status == 404)
-                            displayMessage("error", 'Error experienced: Incorrect Application Url.', "System Management");
-                        else
-                            displayMessage("error", 'Error experienced: ' + xhr.responseText, "System Management");
-                        console.log(xhr);
+                        var errMessage = JSON.parse(xhr.responseText).Message;
+                        displayMessage("error", errMessage, "System Management");
                         $("#addBtn").removeAttr("disabled");
                         $('#addBtn').html('<i class="fa fa-cog"></i> Configure');
-                    }
+                    }                   
                 });
             } else {
                 displayMessage("info", 'System Configuration Cancelled', "System Management");

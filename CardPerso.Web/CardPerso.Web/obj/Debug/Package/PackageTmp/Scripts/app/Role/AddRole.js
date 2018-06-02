@@ -60,41 +60,43 @@ function addRole() {
             functions.push(_function);
         });
 
-        if (_.size(functions) === 0) {
-            displayMessage("error", 'Error experienced: Functions are required', "Roles Management");
-        } else {
+        $('#addBtn').html('<i class="fa fa-spinner fa-spin"></i> Adding...');
+        $("#addBtn").attr("disabled", "disabled");
 
-            $('#addBtn').html('<i class="fa fa-spinner fa-spin"></i> Adding...');
-            $("#addBtn").attr("disabled", "disabled");
+        var data = {
+            Name: roleName,
+            Functions: functions,
+            LoggedInUser: username
+        };
 
-            var data = {
-                Name: roleName,
-                Functions: functions,
-                LoggedInUser: username
-            };
+        $.ajax({
+            url: settingsManager.websiteURL + 'api/RoleAPI/SaveRole',
+            type: 'POST',
+            data: data,
+            processData: true,
+            async: true,
+            cache: false,
+            success: function (response) {
+                if (!_.isEmpty(response.SuccessMsg)) {
+                    displayMessage("success", response.SuccessMsg, "Roles Management");
 
-            $.ajax({
-                url: settingsManager.websiteURL + 'api/RoleAPI/SaveRole',
-                type: 'POST',
-                data: data,
-                processData: true,
-                async: true,
-                cache: false,
-                success: function (response) {
-                    if (!_.isEmpty(response.SuccessMsg)) {
-                        displayMessage("success", response.SuccessMsg, "Roles Management");
-
-                        $('#roleName').val('');
-                        $('#dynamicfunctions input[type=checkbox]').removeAttr('checked');
-                    } else if (!_.isEmpty(response.ErrorMsg)) {
-                        displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Roles Management");
-                    }
-                    
-                    $("#addBtn").removeAttr("disabled");
-                    $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+                    $('#roleName').val('');
+                    $('#dynamicfunctions input[type=checkbox]').removeAttr('checked');
+                } else if (!_.isEmpty(response.ErrorMsg)) {
+                    displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Roles Management");
                 }
-            });
-        }
+
+                $("#addBtn").removeAttr("disabled");
+                $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+            },
+             error: function (xhr) {                
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Roles Management");
+                $("#addBtn").removeAttr("disabled");
+                $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+            }
+        });
+
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "Roles Management");
         $("#addBtn").removeAttr("disabled");

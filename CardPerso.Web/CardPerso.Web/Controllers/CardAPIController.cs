@@ -51,18 +51,12 @@ namespace CardPerso.Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Card card = Mapper.Map<Card>(model);
-                    card.ClientIP = HttpContext.Current.Request.UserHostAddress;
-                    Response result = CardPL.Update(card, model.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Card card = Mapper.Map<Card>(model);
+                card.Pan = Crypter.Mask(card.Pan);
+                card.ClientIP = HttpContext.Current.Request.UserHostAddress;
+
+                Response result = CardPL.Update(card, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

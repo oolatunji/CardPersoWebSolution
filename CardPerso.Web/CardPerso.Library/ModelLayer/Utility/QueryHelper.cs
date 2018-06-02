@@ -9,7 +9,7 @@ namespace CardPerso.Library.ModelLayer.Utility
 {
     public class QueryHelper
     {
-        static string dateFormat = "YYYY/MM/DD";
+        static string dateFormat = "YYYY/MM/DD HH24:MI:SS";
 
         public static string CustomApprovalSelectQuery(Dictionary<string, string> filters, string tablename)
         {
@@ -52,7 +52,7 @@ namespace CardPerso.Library.ModelLayer.Utility
                         }
                     }
                 });
-            }           
+            }               
 
             return query;
         }

@@ -168,6 +168,16 @@ namespace CardPerso.Library.ProcessLayer
                 var obj = JsonConvert.DeserializeObject<IP>(approval.Obj);
                 response = IPPL.Delete(obj, string.Empty, true);
             }
+            if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateBranch)))
+            {
+                var obj = JsonConvert.DeserializeObject<Branch>(approval.Obj);
+                response = BranchPL.Save(obj, string.Empty, true);
+            }
+            else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateBranch)))
+            {
+                var obj = JsonConvert.DeserializeObject<Branch>(approval.Obj);
+                response = BranchPL.Update(obj, string.Empty, true);
+            }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateRole)))
             {
                 var obj = JsonConvert.DeserializeObject<Role>(approval.Obj);

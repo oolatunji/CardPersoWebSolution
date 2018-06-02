@@ -2,10 +2,10 @@
 
     var currentUrl = window.location.href;
     var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
-    var userIP = user.Function;
+    var userFunctions = user.Function;
 
     var exist = false;
-    $.each(userIP, function (key, userfunction) {
+    $.each(userFunctions, function (key, userfunction) {
         var link = settingsManager.websiteURL.trimRight('/') + userfunction.PageLink;
         if (currentUrl == link) {
             exist = true;
@@ -60,6 +60,12 @@ function addIP() {
                     displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Allowed IP Management");
                 }
 
+                $("#addBtn").removeAttr("disabled");
+                $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Allowed IP Management");
                 $("#addBtn").removeAttr("disabled");
                 $('#addBtn').html('<i class="fa fa-cog"></i> Add');
             }

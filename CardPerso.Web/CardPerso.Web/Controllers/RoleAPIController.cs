@@ -16,23 +16,15 @@ namespace CardPerso.Web.Controllers
     public class RoleAPIController : ApiController
     {
         [HttpPost]
-        public HttpResponseMessage SaveRole([FromBody]RoleModel role)
+        public HttpResponseMessage SaveRole([FromBody]RoleModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Role roleObj = Mapper.Map<Role>(role);
-                    roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                Role roleObj = Mapper.Map<Role>(model);
+                roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = RolePL.Save(roleObj, role.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = RolePL.Save(roleObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
@@ -42,23 +34,15 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateRole([FromBody]RoleModel role)
+        public HttpResponseMessage UpdateRole([FromBody]RoleModel model)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Role roleObj = Mapper.Map<Role>(role);
-                    roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                Role roleObj = Mapper.Map<Role>(model);
+                roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                    Response result = RolePL.Update(roleObj, role.LoggedInUser, false);
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-                {
-                    string errors = ModelStateValidation.GetErrorListFromModelState(ModelState);
-                    return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = errors });
-                }
+                Response result = RolePL.Update(roleObj, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

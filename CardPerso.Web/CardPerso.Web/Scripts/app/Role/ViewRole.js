@@ -258,41 +258,43 @@ function update() {
             functions.push(_function);
         });
 
-        if (_.size(functions) === 0) {
-            displayMessage("error", 'Error experienced: Functions are required', "Roles Management");
-        } else {
+        $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+        $("#updateBtn").attr("disabled", "disabled");
 
-            $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
-            $("#updateBtn").attr("disabled", "disabled");
+        var id = $('#id').val();
 
-            var id = $('#id').val();
+        var data = {
+            Name: name,
+            Functions: functions,
+            LoggedInUser: username,
+            Id: id
+        };
 
-            var data = {
-                Name: name,
-                Functions: functions,
-                LoggedInUser: username,
-                Id: id
-            };
-
-            $.ajax({
-                url: settingsManager.websiteURL + 'api/RoleAPI/UpdateRole',
-                type: 'PUT',
-                data: data,
-                processData: true,
-                async: true,
-                cache: false,
-                success: function (response) {
-                    if (!_.isEmpty(response.SuccessMsg)) {
-                        displayMessage("success", response.SuccessMsg, "Roles Management");
-                        refreshResult();
-                    } else if (!_.isEmpty(response.ErrorMsg)) {
-                        displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Roles Management");
-                    }
-                    $("#updateBtn").removeAttr("disabled");
-                    $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+        $.ajax({
+            url: settingsManager.websiteURL + 'api/RoleAPI/UpdateRole',
+            type: 'PUT',
+            data: data,
+            processData: true,
+            async: true,
+            cache: false,
+            success: function (response) {
+                if (!_.isEmpty(response.SuccessMsg)) {
+                    displayMessage("success", response.SuccessMsg, "Roles Management");
+                    refreshResult();
+                } else if (!_.isEmpty(response.ErrorMsg)) {
+                    displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Roles Management");
                 }
-            });
-        }
+                $("#updateBtn").removeAttr("disabled");
+                $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Roles Management");
+                $("#updateBtn").removeAttr("disabled");
+                $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+            }
+        });
+
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "Roles Management");
         $("#updateBtn").removeAttr("disabled");

@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using CardPerso.Library.ModelLayer.Utility;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace CardPerso.Library.ModelLayer.Model
             {
                 ID1 = Convert.ToString(record["ID1"]),
                 Name = Convert.ToString(record["NAMEONCARD"]),
-                Pan = Convert.ToString(record["PAN"]),
+                Pan = Convert.ToString(record["PAN"]) != "" ? Crypter.Mask(Convert.ToString(record["PAN"])) : string.Empty,
                 PrintStatus = Convert.ToInt32(record["PRINTSTATUS"]),
                 CardStatus = Convert.ToInt32(record["PRINTSTATUS"]) == 1? "Not Printed" : "Printed",
                 Username = Convert.ToString(record["VUSERNAME"]),

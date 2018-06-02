@@ -55,6 +55,7 @@
     <Compile Include="DataLayer\ApprovalConfigurationDL.cs" />
     <Compile Include="DataLayer\ApprovalDL.cs" />
     <Compile Include="DataLayer\AuditTrailDL.cs" />
+    <Compile Include="DataLayer\BranchDL.cs" />
     <Compile Include="DataLayer\CardDL.cs" />
     <Compile Include="DataLayer\FunctionDL.cs" />
     <Compile Include="DataLayer\IPDL.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ModelLayer\Model\ApprovalConfiguration.cs" />
     <Compile Include="ModelLayer\Model\AuditTrail.cs" />
     <Compile Include="ModelLayer\Model\BaseModel.cs" />
+    <Compile Include="ModelLayer\Model\Branch.cs" />
     <Compile Include="ModelLayer\Model\Card.cs" />
     <Compile Include="ModelLayer\Model\Function.cs" />
     <Compile Include="ModelLayer\Model\IP.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="ProcessLayer\ApprovalConfigurationPL.cs" />
     <Compile Include="ProcessLayer\ApprovalPL.cs" />
     <Compile Include="ProcessLayer\AuditTrailPL.cs" />
+    <Compile Include="ProcessLayer\BranchPL.cs" />
     <Compile Include="ProcessLayer\CardPL.cs" />
     <Compile Include="ProcessLayer\FunctionPL.cs" />
     <Compile Include="ProcessLayer\IPPL.cs" />

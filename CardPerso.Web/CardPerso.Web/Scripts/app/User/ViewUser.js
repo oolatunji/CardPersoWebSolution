@@ -1,4 +1,9 @@
-﻿$(document).ready(function () {
+﻿var p = this;
+p.roles = [];
+p.branches = [];
+
+$(document).ready(function () {
+
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
@@ -14,11 +19,15 @@
 
         if (!exist)
             window.location.href = '../System/UnAuthorized';
-        else
-            getRolesAndDisplayUsers();
+        else {
+            getRolesAndBranches();
+            getUsers();
+        }
+            
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "User Management");
     }
+
 });
 
 String.prototype.trimRight = function (charlist) {
@@ -28,30 +37,42 @@ String.prototype.trimRight = function (charlist) {
     return this.replace(new RegExp("[" + charlist + "]+$"), "");
 };
 
-function getRolesAndDisplayUsers() {
+function getRolesAndBranches() {
+
     try {
+
         $.ajax({
             url: settingsManager.websiteURL + 'api/RoleAPI/RetrieveRoles',
             type: 'GET',
             async: true,
             cache: false,
-            success: function (response) {
-
-                var roles = [];
-                roles = response.data;
-
-                getUsers(roles);
+            success: function (response) {                
+                p.roles = response.data;                
             },
             error: function (xhr) {
                 displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
             }
         });
+
+        $.ajax({
+            url: settingsManager.websiteURL + 'api/BranchAPI/RetrieveBranches',
+            type: 'GET',
+            async: true,
+            cache: false,
+            success: function (response) {
+                p.branches = response.data;
+            },
+            error: function (xhr) {
+                displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
+            }
+        });
+
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "User Management");
     }
 }
 
-function getUsers(roles) {
+function getUsers() {
 
     $('#example tfoot th').each(function () {
         var title = $('#example tfoot th').eq($(this).index()).text();
@@ -82,6 +103,7 @@ function getUsers(roles) {
             { "data": "Othernames" },
             { "data": "Username" },
             { "data": "UserRole.Name" },
+            { "data": "UserBranch.Name" },
             {
                 "data": "Gender",
                 "visible": false
@@ -115,19 +137,19 @@ function getUsers(roles) {
                     "sExtends": "copy",
                     "sButtonText": "Copy to Clipboard",
                     "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8]
+                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
                 },
                 {
                     "sExtends": "csv",
                     "sButtonText": "Save to CSV",
                     "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8]
+                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
                 },
                 {
                     "sExtends": "xls",
                     "sButtonText": "Save for Excel",
                     "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8]
+                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
                 }
             ]
         }
@@ -176,7 +198,7 @@ function getUsers(roles) {
         else {
             closeAll();
 
-            row.child(format(row.data(), roles)).show();
+            row.child(format(row.data())).show();
             tr.addClass('shown');
         }
     });
@@ -204,7 +226,7 @@ $(document).ready(function () {
     });
 });
 
-function format(d, roles) {
+function format(d) {
     var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
     table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Arial;">Lastname:</td>';
@@ -235,13 +257,24 @@ function format(d, roles) {
     table += '<td style="color:navy;width:20%;font-family:Arial;">Role:</td>';
     table += '<td><select class="form-control" name="role" id="role">';
     table += '<option value="">Select Role</option>';
-    $.each(roles, function (key, value) {
+    $.each(p.roles, function (key, value) {
         if (d.UserRole.Id == value.Id)
             table += '<option selected="selected" value="' + value.Id + '">' + value.Name + '</option>';
         else
             table += '<option value="' + value.Id + '">' + value.Name + '</option>';
     });
-    table += '</select></td></tr>'; 
+    table += '</select></td></tr>';
+    table += '<tr>';
+    table += '<td style="color:navy;width:20%;font-family:Arial;">Branch:</td>';
+    table += '<td><select class="form-control" name="branch" id="branch">';
+    table += '<option value="">Select Branch</option>';
+    $.each(p.branches, function (key, value) {
+        if (d.UserBranch.Id == value.Id)
+            table += '<option selected="selected" value="' + value.Id + '">' + value.Name + '</option>';
+        else
+            table += '<option value="' + value.Id + '">' + value.Name + '</option>';
+    });
+    table += '</select></td></tr>';
     table += '<tr>';
     table += '<td style="display:none">Username:</td>';
     table += '<td style="display:none"><input class="form-control" id="username" value="' + d.Username + '"/></td>';
@@ -288,6 +321,8 @@ function update() {
         var email = $('#email').val();
         var userRole = $('#role').val();
         var userRoleName = $('#role option:selected').html();
+        var userBranch = $('#branch').val();
+        var userBranchName = $('#branch option:selected').html();
         var username = $('#username').val();
         var id = $('#id').val();
         var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
@@ -301,6 +336,8 @@ function update() {
             RoleId: userRole,
             LoggedInUser: loggedInUsername,
             RoleName: userRoleName,
+            BranchId: userBranch,
+            BranchName: userBranchName,
             ID: id
         };
 
@@ -322,7 +359,8 @@ function update() {
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             },
             error: function (xhr) {
-                displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "User Management");
                 $("#updateBtn").removeAttr("disabled");
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             }

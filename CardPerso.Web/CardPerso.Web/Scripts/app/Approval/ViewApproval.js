@@ -197,7 +197,7 @@ function printObject(obj) {
                     }
                     traverse(obj[l], false);
                 } else {
-                    if (l != 'Id' && l != 'Password' && l != 'CreatedOn' && l != 'Date' && obj[l] != null) {
+                    if (l != 'Id' && l != 'Password' && l != 'CreatedOn' && l != 'Date' && obj[l] != null && l != 'RoleId' && l != 'BranchId' && l != 'ID1') {
                         if (showtitle === undefined) {
                             result += '<b style="color:green;">' + l + '</b>' + ': ' + obj[l] + '<br/>';
                         } else {

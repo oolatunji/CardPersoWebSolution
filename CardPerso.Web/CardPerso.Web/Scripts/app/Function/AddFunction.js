@@ -33,6 +33,12 @@
                 
                 $("#addBtn").removeAttr("disabled");
                 $('#addBtn').html('<i class="fa fa-cog"></i> Add');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "Functions Management");
+                $("#addBtn").removeAttr("disabled");
+                $('#addBtn').html('<i class="fa fa-cog"></i> Add');
             }
         });
     } catch (err) {

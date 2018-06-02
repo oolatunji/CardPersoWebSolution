@@ -11,7 +11,7 @@
             $('#addBtn').html('<i class="fa fa-spinner fa-spin"></i> Retrieve...');
             $("#addBtn").attr("disabled", "disabled");
 
-            var data = { Username: username };
+            var data = { Username: username, Password: "na" };
             $.ajax({
                 url: settingsManager.websiteURL + 'api/UserAPI/ForgotPassword',
                 type: 'PUT',
@@ -30,8 +30,9 @@
                     $("#addBtn").removeAttr("disabled");
                     $('#addBtn').html('<i class="fa fa-user"></i> Retrieve');
                 },
-                error: function (xhr) {
-                    displayMessage("error", "Error encountered: " + xhr.responseText, "Password Management");
+                error: function (xhr) {                
+                    var errMessage = JSON.parse(xhr.responseText).Message;
+                    displayMessage("error", errMessage, "Password Management");
                     $("#addBtn").removeAttr("disabled");
                     $('#addBtn').html('<i class="fa fa-user"></i> Retrieve');
                 }
