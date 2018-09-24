@@ -33,7 +33,7 @@ namespace CardPerso.Web
 
             var ip = HttpContext.Current.Request.UserHostAddress;                  
 
-            response = ValidateUserandIP(username, password, ip);
+            response = ValidateClientUser(username, password, ip);
 
             return response;
         }
@@ -64,7 +64,7 @@ namespace CardPerso.Web
         }
 
         [WebMethod]
-        public AuditResponse AuditCardAccountRequestAction(string pan, string printedName, string userPrinting, string clientIP)
+        public AuditResponse AuditCardAccountRequestAction(string printerSerialNumber, string pan, string printedName, string userPrinting, string clientIP)
         {
             var response = new AuditResponse();
 
@@ -82,7 +82,8 @@ namespace CardPerso.Web
                     {
                         Pan = Crypter.Mask(pan),
                         PrintedName = printedName,
-                        UserPrinting = userPrinting
+                        UserPrinting = userPrinting,
+                        PrinterSerialNumber = printerSerialNumber
                     };
 
                     AuditTrail obj = new AuditTrail();
@@ -114,7 +115,7 @@ namespace CardPerso.Web
         }
 
         //[WebMethod]
-        private AuthenticationResponse ValidateUserandIP(string username, string password, string ipAddress)
+        private AuthenticationResponse ValidateClientUser(string username, string password, string ipAddress)
         {
             var response = new AuthenticationResponse();
 
@@ -126,11 +127,10 @@ namespace CardPerso.Web
 
             var validatedUser = UserPL.AuthenticateUser(user, false);
 
-            var validatedIP = IPPL.IPAddressExists(ipAddress);
-
-            if (string.IsNullOrEmpty(validatedUser.ErrorMsg) && string.IsNullOrEmpty(validatedIP.ErrorMsg))
+            if (string.IsNullOrEmpty(validatedUser.ErrorMsg))
             {
                 response.IsSuccessful = true;
+                response.BranchId = validatedUser.BranchId;
                 response.FailureReason = string.Empty;
 
                 AuditTrail obj = new AuditTrail();
@@ -142,21 +142,11 @@ namespace CardPerso.Web
                 obj.ApprovedOn = System.DateTime.Now;
                 obj.ClientIP = ipAddress;
                 AuditTrailDL.Save(obj);
-            }
-            else if (!string.IsNullOrEmpty(validatedUser.ErrorMsg) && string.IsNullOrEmpty(validatedIP.ErrorMsg))
-            {
-                response.IsSuccessful = false;
-                response.FailureReason = validatedUser.ErrorMsg;
-            }
-            else if (string.IsNullOrEmpty(validatedUser.ErrorMsg) && !string.IsNullOrEmpty(validatedIP.ErrorMsg))
-            {
-                response.IsSuccessful = false;
-                response.FailureReason = validatedIP.ErrorMsg;
-            }
+            }            
             else
             {
                 response.IsSuccessful = false;
-                response.FailureReason = $"Invalid Username/Password. IP Address {ipAddress} not allowed.";
+                response.FailureReason = "Invalid Username/Password.";
             }            
 
             return response;

@@ -3,6 +3,7 @@ using CardPerso.Library.ModelLayer.Model;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
 using CardPerso.Web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,11 @@ namespace CardPerso.Web.Controllers
                 var branchObj = Mapper.Map<Branch>(model);
                 branchObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                Response result = BranchPL.Update(branchObj, model.LoggedInUser, false);
+                BranchModel oldBranchModel = JsonConvert.DeserializeObject<BranchModel>(model.OldData);
+                Branch oldBranchData = Mapper.Map<Branch>(oldBranchModel);
+                oldBranchData.ClientIP = branchObj.ClientIP;
+
+                Response result = BranchPL.Update(branchObj, oldBranchData, model.LoggedInUser, false);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

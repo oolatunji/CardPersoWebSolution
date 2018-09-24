@@ -177,29 +177,58 @@ $(document).ready(function () {
 
 function formatDetails(d) {
     var details = JSON.parse(d.Details);
-    var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
-    table += '<tr>';
-    table += '<td style="color:navy;width:20%;font-family:Arial;">Request Details</td>';
-    table += '<td>' + printObject(details) + '</td>';
-    table += '</tr>';
-    table += '</table>';
-    return table;
+
+    if (!_.isEmpty(d.OldDetails)) {
+
+        var oldDetails = JSON.parse(d.OldDetails);
+
+        var differences = Object.keys(details).filter(k => details[k] !== oldDetails[k]);
+
+        var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
+        table += '<tr>';
+        table += '<td style="color:navy;width:20%;font-family:Arial;">Details</td>';
+        table += '<td style="width:40%;"><h5 style="font-weight:bold;color:navy;">NEW DETAILS</h5>' + printObject(details, differences) + '</td>';
+        table += '<td style="width:40%;"><h5 style="font-weight:bold;color:navy;">OLD DETAILS</h5>' + printObject(oldDetails, differences) + '</td>';
+        table += '</tr>';
+        table += '</table>';
+        return table;
+
+    } else {
+
+        var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
+        table += '<tr>';
+        table += '<td style="color:navy;width:20%;font-family:Arial;">Details</td>';
+        table += '<td>' + printObject(details, []) + '</td>';
+        table += '</tr>';
+        table += '</table>';
+        return table;
+
+    }
 }
 
-function printObject(obj) {
+function printObject(obj, differences) {
+
     var result = "";
     function traverse(obj, showtitle) {
         for (var l in obj) {
             if (obj.hasOwnProperty(l)) {
                 if (obj[l] instanceof Object) {
                     if (isNaN(l)) {
-                        result += '<b style="color:green;">' + l + ':</b><br/>';
+                        if (differences.includes(l)) {
+                            result += `<b style="color:red;">` + l + ':</b><br/>';
+                        } else {
+                            result += `<b style="color:green;">` + l + ':</b><br/>';
+                        }
                     }
                     traverse(obj[l], false);
                 } else {
-                    if (l != 'Id' && l != 'Password' && l != 'CreatedOn' && l != 'Date' && obj[l] != null && l != 'RoleId' && l != 'BranchId' && l != 'ID1') {
+                    if (l != 'Id' && l != 'Password' && l != 'CreatedOn' && l != 'Date' && obj[l] != null && l != 'RoleId' && l != 'BranchId' && l != 'ID1' && l != 'PrintStatus') {
                         if (showtitle === undefined) {
-                            result += '<b style="color:green;">' + l + '</b>' + ': ' + obj[l] + '<br/>';
+                            if (differences.includes(l)) {
+                                result += `<b style="color:red;">` + l + '</b>' + ': ' + obj[l] + '<br/>';
+                            } else {
+                                result += `<b style="color:green;">` + l + '</b>' + ': ' + obj[l] + '<br/>';
+                            }
                         } else {
                             result += obj[l] + '<br/>';
                         }

@@ -132,7 +132,9 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -391,6 +393,7 @@
     <Content Include="Scripts\app\Utility\SystemConfiguration.js" />
     <Content Include="Scripts\lib\xcharts.js" />
     <Content Include="Scripts\lib\xcharts.min.js" />
+    <Content Include="Webservicefile\ADAuthenticator.xml" />
     <None Include="Properties\PublishProfiles\CardPerso.pubxml" />
     <None Include="Scripts\lib\_references.js" />
     <Content Include="Web.config">

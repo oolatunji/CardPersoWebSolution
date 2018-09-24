@@ -3,6 +3,7 @@ using CardPerso.Library.ModelLayer.Model;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
 using CardPerso.Web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,11 @@ namespace CardPerso.Web.Controllers
                 var ipObj = Mapper.Map<IP>(model);
                 ipObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                Response result = IPPL.Update(ipObj, model.LoggedInUser, false);
+                IPModel oldIPModel = JsonConvert.DeserializeObject<IPModel>(model.OldData);
+                IP oldIPData = Mapper.Map<IP>(oldIPModel);
+                oldIPData.ClientIP = ipObj.ClientIP;
+
+                Response result = IPPL.Update(ipObj, oldIPData, model.LoggedInUser, false);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

@@ -19,7 +19,7 @@ namespace CardPerso.Library.DataLayer
             OracleTransaction txn = conn.BeginTransaction(IsolationLevel.ReadCommitted);
             try
             {                
-                var password = PasswordHash.MD5Hash(user.Password);
+                var password = PasswordHash.SHA256Hash(user.Password);
 
                 OracleCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO SYSTEMUSERS(LASTNAME, OTHERNAMES, GENDER, EMAILADDRESS, USERNAME, PASSWORD, ROLEID, CREATEDON, BranchId) VALUES(:lastname, :othernames, :gender, :email, :username, :password, :roleid, :createdon, :branchid) RETURNING ID INTO :id";
@@ -127,7 +127,7 @@ namespace CardPerso.Library.DataLayer
             OracleTransaction txn = conn.BeginTransaction(IsolationLevel.ReadCommitted);
             try
             {
-                var password = PasswordHash.MD5Hash(user.Password);
+                var password = PasswordHash.SHA256Hash(user.Password);
 
                 OracleCommand cmd = conn.CreateCommand();
                 cmd.CommandText = @"UPDATE SYSTEMUSERS SET

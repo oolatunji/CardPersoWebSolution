@@ -13,6 +13,7 @@ namespace CardPerso.Web.Models
         public int PrintStatus { get; set; }
         public string Status { get; set; }
         public string LoggedInUser { get; set; }
+        public string OldData { get; set; }
         public string ID1 { get; set; }
     }
 }

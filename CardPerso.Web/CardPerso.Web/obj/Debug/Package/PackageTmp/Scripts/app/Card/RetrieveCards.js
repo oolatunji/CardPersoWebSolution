@@ -1,4 +1,15 @@
-﻿$(document).ready(function () {
+﻿String.prototype.trimRight = function (charlist) {
+    if (charlist === undefined)
+        charlist = "\s";
+
+    return this.replace(new RegExp("[" + charlist + "]+$"), "");
+};
+
+var p = this;
+p.existingCard = {};
+
+$(document).ready(function () {
+
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
@@ -47,174 +58,213 @@
             var today = new Date();
             var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
             $('#requestedFrom').val(date);
-
-            var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
-            $('#requestedby').val(username);
-            
-            getLatestCards();
+                      
+            getBranches();
         }
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "Card Management");
     }
 });
 
-String.prototype.trimRight = function (charlist) {
-    if (charlist === undefined)
-        charlist = "\s";
+function getBranches() {
+    $('#userBranch').html('<option>Loading Branches...</option>');
+    $('#userBranch').prop('disabled', 'disabled');
+    //Get Branches
+    $.ajax({
+        url: settingsManager.websiteURL + 'api/BranchAPI/RetrieveBranches',
+        type: 'GET',
+        async: true,
+        cache: false,
+        success: function (response) {
+            $('#userBranch').html('');
+            $('#userBranch').prop('disabled', false);
+            $('#userBranch').append('<option value="">Select Branch</option>');
+            var roles = response.data;
+            var html = '';
+            $.each(roles, function (key, value) {
+                $('#userBranch').append('<option value="' + value.Id + '">' + value.Name + '</option>');
+            });
 
-    return this.replace(new RegExp("[" + charlist + "]+$"), "");
-};
-
-function search() {
-    try {
-        getCards();
-    } catch (err) {
-        displayMessage("error", "Error encountered: " + err, "Card Management");
-    }
-}
-
-function getCards() {
-    var table = $('#example').DataTable();
-    table.ajax.reload();
-}
-
-function getLatestCards() {
-
-    var table = $('#example').DataTable({
-
-        "processing": true,
-
-        "ajax": {
-            "url": settingsManager.websiteURL + 'api/CardAPI/RetrieveFilteredCards',
-            "type": "POST",
-            "data": function (d) {
-                d.RequestedBy = $('#requestedby').val();
-                d.Status = $('#status').val();
-                d.RequestedFrom = $('#requestedFrom').val().toDate();
-                d.RequestedTo = $('#requestedTo').val().toDate();
-            },
+            searchCards();
         },
+        error: function (xhr) {
+            displayMessage("error", 'Error experienced: ' + xhr.responseText, "User Management");
+        }
+    });
+}
 
-        "columns": [
-            {
-                "className": 'details-control',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
-            },
-            {
-                "className": 'edit-control',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
-            },
-            { "data": "Name" },
-            { "data": "Pan" },
-            { "data": "CardStatus" },
-            { "data": "Username" },
-            { "data": "PrintedName" },
-            { "data": "DisplayDate" },
-            {
-                "data": "Track1Data",
-                "visible": false
-            },
-            {
-                "data": "Track2Data",
-                "visible": false
-            },
-            {
-                "data": "PrintStatus",
-                "visible": false
-            },
-            {
-                "data": "ID1",
-                "visible": false
-            }
-        ],
+function searchCards() {
 
-        "order": [[11, "asc"]],
+    $('#searchBtn').html('<i class="fa fa-spinner fa-spin"></i> Searching...');
+    $("#searchBtn").attr("disabled", "disabled");
 
-        "sDom": 'T<"clear">lrtip',
+    var searchData = {
+        UserBranch: $('#userBranch').val(),
+        Status: $('#status').val(),
+        RequestedFrom: $('#requestedFrom').val().toDate(),
+        RequestedTo: $('#requestedTo').val().toDate()
+    };
 
-        "oTableTools": {
-            "sSwfPath": settingsManager.websiteURL + "images/copy_csv_xls_pdf.swf",
-            "aButtons": [
+    $.ajax({
+        url: settingsManager.websiteURL + 'api/CardAPI/RetrieveFilteredCards',
+        type: 'POST',
+        data: searchData,
+        processData: true,
+        async: true,
+        cache: false,
+        success: function (response) {
+
+            $("#searchBtn").removeAttr("disabled");
+            $('#searchBtn').html('<i class="fa fa-cog"></i> Search');
+
+            displayMessage("success", `${response.data.length} records found.`, "Card Management");
+            getLatestCards(response.data);
+
+        },
+        error: function (xhr) {
+            var errMessage = JSON.parse(xhr.responseText).Message;
+            displayMessage("error", errMessage, "Card Management");
+
+            $("#searchBtn").removeAttr("disabled");
+            $('#searchBtn').html('<i class="fa fa-cog"></i> Search');
+        }
+    });
+
+}
+
+function getLatestCards(cards) {
+
+    if ($.fn.DataTable.isDataTable('#example')) {
+
+        var table = $('#example').DataTable();
+        table.clear().draw();
+        table.rows.add(cards);
+        table.columns.adjust().draw();
+        table.search("").draw();
+
+    } else {
+
+        var table = $('#example').DataTable({
+            "processing": false,
+            "data": cards,
+            "columns": [
                 {
-                    "sExtends": "copy",
-                    "sButtonText": "Copy to Clipboard",
-                    "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    "className": 'details-control',
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": ''
                 },
                 {
-                    "sExtends": "csv",
-                    "sButtonText": "Save to CSV",
-                    "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    "className": 'edit-control',
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": ''
+                },
+                { "data": "Name" },
+                { "data": "Pan" },
+                { "data": "CardStatus" },
+                { "data": "Username" },
+                { "data": "PrintedName" },
+                { "data": "DisplayDate" },
+                {
+                    "data": "Track1Data",
+                    "visible": false
                 },
                 {
-                    "sExtends": "xls",
-                    "sButtonText": "Save for Excel",
-                    "oSelectorOpts": { filter: 'applied', order: 'current' },
-                    "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    "data": "Track2Data",
+                    "visible": false
+                },
+                {
+                    "data": "PrintStatus",
+                    "visible": false
+                },
+                {
+                    "data": "ID1",
+                    "visible": false
                 }
-            ]
-        }
-    });
-
-    $('#example tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-
-        function closeAll() {
-            var e = $('#example tbody tr.shown');
-            var rows = table.row(e);
-            if (tr != e) {
-                e.removeClass('shown');
-                rows.child.hide();
+            ],
+            "order": [[11, "asc"]],
+            "sDom": 'T<"clear">lrtip',
+            "oTableTools": {
+                "sSwfPath": settingsManager.websiteURL + "images/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "copy",
+                        "sButtonText": "Copy to Clipboard",
+                        "oSelectorOpts": { filter: 'applied', order: 'current' },
+                        "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sButtonText": "Save to CSV",
+                        "oSelectorOpts": { filter: 'applied', order: 'current' },
+                        "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    },
+                    {
+                        "sExtends": "xls",
+                        "sButtonText": "Save for Excel",
+                        "oSelectorOpts": { filter: 'applied', order: 'current' },
+                        "mColumns": [2, 3, 4, 5, 6, 7, 8, 9]
+                    }
+                ]
             }
-        }
+        });
 
-        if (row.child.isShown()) {
-            closeAll();
-        }
-        else {
-            closeAll();
+        $('#example tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
 
-            row.child(formatDetails(row.data())).show();
-            tr.addClass('shown');
-        }
-    });
-
-    $('#example tbody').on('click', 'td.edit-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-
-        function closeAll() {
-            var e = $('#example tbody tr.shown');
-            var rows = table.row(e);
-            if (tr != e) {
-                e.removeClass('shown');
-                rows.child.hide();
+            function closeAll() {
+                var e = $('#example tbody tr.shown');
+                var rows = table.row(e);
+                if (tr != e) {
+                    e.removeClass('shown');
+                    rows.child.hide();
+                }
             }
-        }
 
-        if (row.child.isShown()) {
-            closeAll();
-        }
-        else {
-            closeAll();
+            if (row.child.isShown()) {
+                closeAll();
+            }
+            else {
+                closeAll();
 
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
-        }
-    });
+                row.child(formatDetails(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
 
-    $("#example tfoot input").on('keyup change', function () {
-        table
-            .column($(this).parent().index() + ':visible')
-            .search(this.value)
-            .draw();
-    });
+        $('#example tbody').on('click', 'td.edit-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            function closeAll() {
+                var e = $('#example tbody tr.shown');
+                var rows = table.row(e);
+                if (tr != e) {
+                    e.removeClass('shown');
+                    rows.child.hide();
+                }
+            }
+
+            if (row.child.isShown()) {
+                closeAll();
+            }
+            else {
+                closeAll();
+
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+
+        $("#example tfoot input").on('keyup change', function () {
+            table
+                .column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();
+        });
+    }
 };
 
 $(document).ready(function () {
@@ -224,6 +274,9 @@ $(document).ready(function () {
 });
 
 function format(d, roles) {
+    
+    p.existingCard = d;
+
     var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
     table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Arial;">Track 1 Data</td>';
@@ -286,13 +339,23 @@ function update() {
         $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
         $("#updateBtn").attr("disabled", "disabled");
 
+        var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldData = {
+            PrintStatus: p.existingCard.PrintStatus,            
+            LoggedInUser: loggedInUsername,
+            Status: p.existingCard.CardStatus,
+            Pan: p.existingCard.Pan,
+            PrintedName: p.existingCard.PrintedName,
+            ID1: p.existingCard.ID1
+        };
+
         var printstatus = $('#printstatus').val();
         var pan = $('#pan').val();
         var printedname = $('#printedname').val();
         var printstatusname = $('#printstatus option:selected').html();
         var username = $('#username').val();
-        var id = $('#id').val();
-        var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+        var id = $('#id').val();        
 
         var data = {
             PrintStatus: printstatus,
@@ -301,8 +364,9 @@ function update() {
             Status: printstatusname,
             Pan: pan,
             PrintedName: printedname,
-            ID1: id
-        };
+            ID1: id,
+            OldData: JSON.stringify(oldData)
+        };       
 
         $.ajax({
             url: settingsManager.websiteURL + 'api/CardAPI/UpdateCard',
@@ -314,7 +378,7 @@ function update() {
             success: function (response) {
                 if (!_.isEmpty(response.SuccessMsg)) {
                     displayMessage("success", response.SuccessMsg, "Card Management");
-                    search();
+                    searchCards();
                 } else if (!_.isEmpty(response.ErrorMsg)) {
                     displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "Card Management");
                 }

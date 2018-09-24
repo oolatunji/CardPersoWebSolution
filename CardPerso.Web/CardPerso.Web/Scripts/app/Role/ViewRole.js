@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿var p = this;
+p.existingRole = {};
+
+$(document).ready(function () {
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
@@ -187,6 +190,9 @@ function refreshResult() {
 }
 
 function format(d, allfunctions) {
+
+    p.existingRole = d;
+
     var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
     table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Arial;">Name:</td>';
@@ -246,9 +252,28 @@ function formatDetails(d, allfunctions) {
 }
 
 function update() {
-    try{
-        var name = $('#name').val();
+    try {        
+
         var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldFunctions = [];
+        _.forEach(p.existingRole.Functions, function (func) {
+            var _function = {
+                Name: func.Name,
+                Id: func.Id
+            }
+            oldFunctions.push(_function);
+        });
+
+        var oldData = {
+            Name: p.existingRole.Name,
+            Functions: oldFunctions,
+            LoggedInUser: username,
+            Id: p.existingRole.Id,
+        };
+
+        var name = $('#name').val();
+
         var functions = [];
         $("input:checkbox[name=functions]:checked").each(function () {
             var _function = {
@@ -261,14 +286,15 @@ function update() {
         $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
         $("#updateBtn").attr("disabled", "disabled");
 
-        var id = $('#id').val();
+        var id = $('#id').val();        
 
         var data = {
             Name: name,
             Functions: functions,
             LoggedInUser: username,
-            Id: id
-        };
+            Id: id,
+            OldData: JSON.stringify(oldData)
+        };       
 
         $.ajax({
             url: settingsManager.websiteURL + 'api/RoleAPI/UpdateRole',

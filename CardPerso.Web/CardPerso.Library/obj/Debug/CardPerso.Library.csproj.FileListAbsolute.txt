@@ -18,3 +18,4 @@ C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.L
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.dll
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.pdb
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\obj\Debug\CardPerso.Library.csprojResolveAssemblyReference.cache
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\CardPerso.Library\bin\Debug\CardPerso.Library.dll.config

@@ -169,7 +169,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response Update(User user, string username, bool overrideApproval)
+        public static Response Update(User user, User oldUserData, string username, bool overrideApproval)
         {
             try
             {
@@ -182,6 +182,7 @@ namespace CardPerso.Library.ProcessLayer
                         Approval approvalObj = new Approval();
                         approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateUser);
                         approvalObj.Details = JsonConvert.SerializeObject(user);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldUserData);
                         approvalObj.Obj = JsonConvert.SerializeObject(user);
                         approvalObj.RequestedBy = username;
                         approvalObj.RequestedOn = System.DateTime.Now;
@@ -330,23 +331,34 @@ namespace CardPerso.Library.ProcessLayer
                 var activeDirectoryHelperSection = (ActiveDirectoryHelper)configuration.GetSection("activeDirectorySection");
                 bool useActiveDirectory = Convert.ToBoolean(activeDirectoryHelperSection.ActiveDirectory.UsesActiveDirectory);
 
-                if(useActiveDirectory)
+                if (useActiveDirectory)
                 {
-                    var adAuthenticationSuccessful = UserExistsAD(user.Username, user.Password);
-                    if(adAuthenticationSuccessful)
+                    var adAuthenticatorService = new ADAuthenticatorService.ADAuthenticator();
+                    var authResponse = adAuthenticatorService.getUserStatus(user.Username, user.Password);
+                    var responseCode = authResponse.Split('|')[0];
+                    if (responseCode == "00")
                     {
-                        authenticatedUser = UserDL.RetrieveUserByUsername(user);                        
-                    }                    
+                        authenticatedUser = UserDL.RetrieveUserByUsername(user);
+                    }
+                    else
+                    {
+                        authenticatedUser = null;
+                    }
+                    //var adAuthenticationSuccessful = UserExistsAD(user.Username, user.Password);
+                    //if(adAuthenticationSuccessful)
+                    //{
+                    //    authenticatedUser = UserDL.RetrieveUserByUsername(user);                        
+                    //}                    
                 }
                 else
                 {
-                    user.Password = PasswordHash.MD5Hash(user.Password);
+                    user.Password = PasswordHash.SHA256Hash(user.Password);
                     authenticatedUser = UserDL.AuthenticateUser(user);
                 }
 
                 if (authenticatedUser != null)
-                {               
-                    if(auditAction)
+                {
+                    if (auditAction)
                     {
                         AuditTrail obj = new AuditTrail();
                         obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UserLogin);
@@ -357,12 +369,13 @@ namespace CardPerso.Library.ProcessLayer
                         obj.ApprovedOn = System.DateTime.Now;
                         obj.ClientIP = user.ClientIP;
                         AuditTrailDL.Save(obj);
-                    }                        
+                    }
 
                     authenticatedUser.Function = FunctionDL.RetrieveByRoleId(authenticatedUser.UserRole.Id);
 
                     response.ErrorMsg = string.Empty;
                     response.DynamicList = new { data = authenticatedUser };
+                    response.BranchId = authenticatedUser.UserBranch.Id;
                 }
                 else
                 {

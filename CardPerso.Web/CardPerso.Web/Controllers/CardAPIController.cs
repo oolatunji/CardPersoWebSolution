@@ -3,6 +3,7 @@ using CardPerso.Library.ModelLayer.Model;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
 using CardPerso.Web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,11 @@ namespace CardPerso.Web.Controllers
                 card.Pan = Crypter.Mask(card.Pan);
                 card.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                Response result = CardPL.Update(card, model.LoggedInUser, false);
+                CardModel oldCardModel = JsonConvert.DeserializeObject<CardModel>(model.OldData);
+                Card oldCardData = Mapper.Map<Card>(oldCardModel);
+                oldCardData.ClientIP = card.ClientIP;
+
+                Response result = CardPL.Update(card, oldCardData, model.LoggedInUser, false);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

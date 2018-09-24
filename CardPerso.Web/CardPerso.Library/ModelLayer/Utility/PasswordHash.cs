@@ -200,6 +200,17 @@ namespace CardPerso.Library.ModelLayer.Utility
             return ByteArrayToString(computedHash);
         }
 
+        public static string SHA256Hash(string plainText)
+        {
+            byte[] clearBytes;
+            byte[] computedHash;
+
+            clearBytes = ASCIIEncoding.ASCII.GetBytes(plainText);
+            computedHash = new SHA256Managed().ComputeHash(clearBytes);
+
+            return ByteArrayToString(computedHash);
+        }
+
         private static string ByteArrayToString(byte[] array)
         {
 

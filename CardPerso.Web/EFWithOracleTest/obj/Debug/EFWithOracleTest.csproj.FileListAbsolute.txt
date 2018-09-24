@@ -16,3 +16,7 @@ C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracl
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\Oracle.ManagedDataAccess.dll
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\AutoMapper.xml
 C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\obj\Debug\EFWithOracleTest.csprojResolveAssemblyReference.cache
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\CardPerso.Library.dll
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\Newtonsoft.Json.dll
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\CardPerso.Library.pdb
+C:\Users\tolat\Documents\projects\CardPersoWebSolution\CardPerso.Web\EFWithOracleTest\bin\Debug\Newtonsoft.Json.xml

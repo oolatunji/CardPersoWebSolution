@@ -39,9 +39,9 @@ namespace CardPerso.Library.ProcessLayer
             try
             {
                 var filters = new Dictionary<string, string>();
-                if (!string.IsNullOrEmpty(filter.RequestedBy))
+                if (!string.IsNullOrEmpty(filter.UserBranch))
                 {
-                    filters.Add("VUSERNAME", filter.RequestedBy);
+                    filters.Add("BRANCHID", filter.UserBranch);
                 }
                 if (!string.IsNullOrEmpty(filter.Status))
                 {
@@ -74,7 +74,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response Update(Card card, string username, bool overrideApproval)
+        public static Response Update(Card card, Card oldCardData, string username, bool overrideApproval)
         {
             try
             {
@@ -87,6 +87,7 @@ namespace CardPerso.Library.ProcessLayer
                         Approval approvalObj = new Approval();
                         approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.ResetCardPrintStatus);
                         approvalObj.Details = JsonConvert.SerializeObject(card);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldCardData);
                         approvalObj.Obj = JsonConvert.SerializeObject(card);
                         approvalObj.RequestedBy = username;
                         approvalObj.RequestedOn = System.DateTime.Now;

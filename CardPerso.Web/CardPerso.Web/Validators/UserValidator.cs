@@ -21,6 +21,7 @@ namespace CardPerso.Web.Validators
             RuleFor(x => x.Username).NotEmpty();
             RuleFor(x => x.RoleId).NotEqual(0);
             RuleFor(x => x.BranchId).NotEqual(0);
+            RuleFor(x => x.OldData).NotEmpty();
         }
     }
 }

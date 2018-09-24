@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿var p = this;
+p.existingBranch = {};
+
+$(document).ready(function () {
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
@@ -135,6 +138,9 @@ $(document).ready(function () {
 });
 
 function format(d) {
+
+    p.existingBranch = d;
+
     // `d` is the original data object for the row
     return '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">' +
         '<tr>' +
@@ -166,18 +172,28 @@ function updateBranch() {
         $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
         $("#updateBtn").attr("disabled", "disabled");
 
+        var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldData = {
+            Name: p.existingBranch.Name,
+            Code: p.existingBranch.Code,
+            Address: p.existingBranch.Address,
+            Id: p.existingBranch.Id,
+            LoggedInUser: username
+        };
+
         var name = $('#name').val();
         var code = $('#code').val();
         var address = $('#address').val();
-        var id = $('#id').val();
-        var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+        var id = $('#id').val();        
 
         var data = {
             Name: name,
             Code: code,
             Address: address,
             Id: id,
-            LoggedInUser: username
+            LoggedInUser: username,
+            OldData: JSON.stringify(oldData)
         };
 
         $.ajax({

@@ -8,6 +8,7 @@ namespace CardPerso.Web.Responses
     public class AuthenticationResponse
     {
         public bool IsSuccessful { get; set; }
+        public int BranchId { get; set; }
         public string FailureReason { get; set; }
     }
 }

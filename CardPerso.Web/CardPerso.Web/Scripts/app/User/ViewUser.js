@@ -1,6 +1,7 @@
 ﻿var p = this;
 p.roles = [];
 p.branches = [];
+p.existingUser = {};
 
 $(document).ready(function () {
 
@@ -227,6 +228,9 @@ $(document).ready(function () {
 });
 
 function format(d) {
+
+    p.existingUser = d;    
+
     var table = '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">';
     table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Arial;">Lastname:</td>';
@@ -325,7 +329,22 @@ function update() {
         var userBranchName = $('#branch option:selected').html();
         var username = $('#username').val();
         var id = $('#id').val();
+
         var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldData = {
+            LastName: p.existingUser.LastName,
+            Othernames: p.existingUser.Othernames,
+            Gender: p.existingUser.Gender,
+            Email: p.existingUser.Email,
+            Username: p.existingUser.Username,
+            RoleId: p.existingUser.UserRole.Id,
+            LoggedInUser: loggedInUsername,
+            RoleName: p.existingUser.UserRole.Name,
+            BranchId: p.existingUser.UserBranch.Id,
+            BranchName: p.existingUser.UserBranch.Name,
+            ID: p.existingUser.Id,
+        };
 
         var data = {
             Lastname: lastname,
@@ -338,8 +357,9 @@ function update() {
             RoleName: userRoleName,
             BranchId: userBranch,
             BranchName: userBranchName,
-            ID: id
-        };
+            Id: id,
+            OldData: JSON.stringify(oldData)
+        };        
 
         $.ajax({
             url: settingsManager.websiteURL + 'api/UserAPI/UpdateUser',
@@ -365,6 +385,7 @@ function update() {
                 $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
             }
         });
+
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "User Management");
         $("#updateBtn").removeAttr("disabled");

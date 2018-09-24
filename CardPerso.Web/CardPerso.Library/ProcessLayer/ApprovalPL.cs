@@ -161,7 +161,7 @@ namespace CardPerso.Library.ProcessLayer
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateIP)))
             {
                 var obj = JsonConvert.DeserializeObject<IP>(approval.Obj);
-                response = IPPL.Update(obj, string.Empty, true);
+                response = IPPL.Update(obj, null, string.Empty, true);
             }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.DeleteIP)))
             {
@@ -176,7 +176,7 @@ namespace CardPerso.Library.ProcessLayer
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateBranch)))
             {
                 var obj = JsonConvert.DeserializeObject<Branch>(approval.Obj);
-                response = BranchPL.Update(obj, string.Empty, true);
+                response = BranchPL.Update(obj, null, string.Empty, true);
             }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateRole)))
             {
@@ -186,7 +186,7 @@ namespace CardPerso.Library.ProcessLayer
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateRole)))
             {
                 var obj = JsonConvert.DeserializeObject<Role>(approval.Obj);
-                response = RolePL.Update(obj, string.Empty, true);
+                response = RolePL.Update(obj, null, string.Empty, true);
             }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.CreateUser)))
             {
@@ -196,12 +196,12 @@ namespace CardPerso.Library.ProcessLayer
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateUser)))
             {
                 var obj = JsonConvert.DeserializeObject<User>(approval.Obj);
-                response = UserPL.Update(obj, string.Empty, true);
+                response = UserPL.Update(obj, null, string.Empty, true);
             }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.ResetCardPrintStatus)))
             {
                 var obj = JsonConvert.DeserializeObject<Card>(approval.Obj);
-                response = CardPL.Update(obj, string.Empty, true);
+                response = CardPL.Update(obj, null, string.Empty, true);
             }
 
             AuditTrail audit = new AuditTrail();

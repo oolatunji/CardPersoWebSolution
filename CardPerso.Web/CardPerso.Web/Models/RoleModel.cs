@@ -16,6 +16,7 @@ namespace CardPerso.Web.Models
         public FuncModel[] Functions { get; set; }
 
         public string LoggedInUser { get; set; }
+        public string OldData { get; set; }
     }
 
     public class FuncModel

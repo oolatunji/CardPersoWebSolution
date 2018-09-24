@@ -17,5 +17,6 @@ namespace CardPerso.Web.Models
         public string IPAddress { get; set; }
         public string Description { get; set; }
         public string LoggedInUser { get; set; }
+        public string OldData { get; set; }
     }
 }

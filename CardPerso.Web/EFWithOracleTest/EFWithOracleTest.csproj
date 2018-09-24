@@ -106,6 +106,12 @@
       <CachedSettingsPropName>EFWithOracleTest_AuthenticationService_AuthenticationService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CardPerso.Library\CardPerso.Library.csproj">
+      <Project>{7d4dd5f9-6c77-4ba0-9593-d3aa34fd89f1}</Project>
+      <Name>CardPerso.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

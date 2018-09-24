@@ -43,9 +43,12 @@ namespace EFWithOracleTest
                 //{
                 //    Console.WriteLine("Card Perso Database and Default Data Set Up Cancelled");
                 //}
-                var client = new AuthenticationService.AuthenticationService();
-                var response = client.ValidateUser("sysadmin", "pass");
-                Console.WriteLine($"{response.IsSuccessful} Response: {response.FailureReason}");
+                //var client = new AuthenticationService.AuthenticationService();
+                //var response = client.ValidateUser("sysadmin", "pass");
+                //Console.WriteLine($"{response.IsSuccessful} Response: {response.FailureReason}");
+                var password = "password";
+                var hashedPassword = CardPerso.Library.ModelLayer.Utility.PasswordHash.SHA256Hash(password);
+                Console.Write(hashedPassword);
                 Console.Read();
             }
             catch(Exception e)

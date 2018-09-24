@@ -119,7 +119,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response Update(Role role, string username, bool overrideApproval)
+        public static Response Update(Role role, Role oldRoleData, string username, bool overrideApproval)
         {
             try
             {
@@ -132,6 +132,7 @@ namespace CardPerso.Library.ProcessLayer
                         Approval approvalObj = new Approval();
                         approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateRole);
                         approvalObj.Details = JsonConvert.SerializeObject(role);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldRoleData);
                         approvalObj.Obj = JsonConvert.SerializeObject(role);
                         approvalObj.RequestedBy = username;
                         approvalObj.RequestedOn = System.DateTime.Now;

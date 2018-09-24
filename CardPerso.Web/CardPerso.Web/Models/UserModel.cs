@@ -11,7 +11,7 @@ namespace CardPerso.Web.Models
 {
     [Validator(typeof(UserValidator))]
     public class UserModel
-    {
+    {        
         public int Id { get; set; }
         [DisplayName("Last name")]
         public string LastName { get; set; }
@@ -28,5 +28,6 @@ namespace CardPerso.Web.Models
         public int BranchId { get; set; }        
         public string BranchName { get; set; }
         public string LoggedInUser { get; set; }
+        public string OldData { get; set; }
     }
 }

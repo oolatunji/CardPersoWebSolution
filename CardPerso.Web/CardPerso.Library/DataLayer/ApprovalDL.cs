@@ -20,9 +20,10 @@ namespace CardPerso.Library.DataLayer
             try
             {
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO SYSTEMAPPROVALS(TYPE, DETAILS, OBJ, REQUESTEDBY, REQUESTEDON, STATUS) VALUES(:type, :details, :obj, :requestedby, :requestedon, :status)";
+                cmd.CommandText = "INSERT INTO SYSTEMAPPROVALS(TYPE, DETAILS, OLDDETAILS, OBJ, REQUESTEDBY, REQUESTEDON, STATUS) VALUES(:type, :details, :olddetails, :obj, :requestedby, :requestedon, :status)";
                 cmd.Parameters.Add(":type", OracleDbType.Varchar2, approval.Type, ParameterDirection.Input);
                 cmd.Parameters.Add(":details", OracleDbType.Varchar2, approval.Details, ParameterDirection.Input);
+                cmd.Parameters.Add(":olddetails", OracleDbType.Varchar2, approval.OldDetails, ParameterDirection.Input);
                 cmd.Parameters.Add(":obj", OracleDbType.Varchar2, approval.Obj, ParameterDirection.Input);
                 cmd.Parameters.Add(":requestedby", OracleDbType.Varchar2, approval.RequestedBy, ParameterDirection.Input);
                 cmd.Parameters.Add(":requestedon", OracleDbType.Date, approval.RequestedOn, ParameterDirection.Input);

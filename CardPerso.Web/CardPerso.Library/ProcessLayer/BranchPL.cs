@@ -119,7 +119,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response Update(Branch branch, string username, bool overrideApproval)
+        public static Response Update(Branch branch, Branch oldBranch, string username, bool overrideApproval)
         {
             try
             {
@@ -132,6 +132,7 @@ namespace CardPerso.Library.ProcessLayer
                         Approval approvalObj = new Approval();
                         approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateBranch);
                         approvalObj.Details = JsonConvert.SerializeObject(branch);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldBranch);
                         approvalObj.Obj = JsonConvert.SerializeObject(branch);
                         approvalObj.RequestedBy = username;
                         approvalObj.RequestedOn = System.DateTime.Now;

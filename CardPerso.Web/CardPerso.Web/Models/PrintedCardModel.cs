@@ -9,6 +9,7 @@ namespace CardPerso.Web.Models
     {
         public string Pan { get; set; }
         public string PrintedName { get; set; }
-        public string UserPrinting { get; set; }        
+        public string UserPrinting { get; set; }
+        public string PrinterSerialNumber { get; set; }
     }
 }

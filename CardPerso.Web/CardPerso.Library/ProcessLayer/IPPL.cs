@@ -119,7 +119,7 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
-        public static Response Update(IP ip, string username, bool overrideApproval)
+        public static Response Update(IP ip, IP oldIP, string username, bool overrideApproval)
         {
             try
             {
@@ -132,6 +132,7 @@ namespace CardPerso.Library.ProcessLayer
                         Approval approvalObj = new Approval();
                         approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateIP);
                         approvalObj.Details = JsonConvert.SerializeObject(ip);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldIP);
                         approvalObj.Obj = JsonConvert.SerializeObject(ip);
                         approvalObj.RequestedBy = username;
                         approvalObj.RequestedOn = System.DateTime.Now;

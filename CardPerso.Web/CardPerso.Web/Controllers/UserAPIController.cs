@@ -3,6 +3,7 @@ using CardPerso.Library.ModelLayer.Model;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
 using CardPerso.Web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +42,13 @@ namespace CardPerso.Web.Controllers
             try
             {
                 User user = Mapper.Map<User>(model);
-                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                UserModel oldUserModel = JsonConvert.DeserializeObject<UserModel>(model.OldData);
+                User oldUserData = Mapper.Map<User>(oldUserModel);
 
-                Response result = UserPL.Update(user, model.LoggedInUser, false);
+                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                oldUserData.ClientIP = user.ClientIP;
+
+                Response result = UserPL.Update(user, oldUserData, model.LoggedInUser, false);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

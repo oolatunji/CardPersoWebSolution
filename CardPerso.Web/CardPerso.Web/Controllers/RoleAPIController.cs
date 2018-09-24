@@ -3,6 +3,7 @@ using CardPerso.Library.ModelLayer.Model;
 using CardPerso.Library.ModelLayer.Utility;
 using CardPerso.Library.ProcessLayer;
 using CardPerso.Web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,11 @@ namespace CardPerso.Web.Controllers
                 Role roleObj = Mapper.Map<Role>(model);
                 roleObj.ClientIP = HttpContext.Current.Request.UserHostAddress;
 
-                Response result = RolePL.Update(roleObj, model.LoggedInUser, false);
+                RoleModel oldRoleModel = JsonConvert.DeserializeObject<RoleModel>(model.OldData);
+                Role oldRoleData = Mapper.Map<Role>(oldRoleModel);
+                oldRoleData.ClientIP = roleObj.ClientIP;
+
+                Response result = RolePL.Update(roleObj, oldRoleData, model.LoggedInUser, false);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

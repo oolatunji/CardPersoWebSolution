@@ -11,6 +11,7 @@ namespace CardPerso.Library.ModelLayer.Model
     {
         public string Type { get; set; }
         public string Details { get; set; }
+        public string OldDetails { get; set; }
         public string Obj { get; set; }
         public string RequestedBy { get; set; }
         public DateTime RequestedOn { get; set; }
@@ -27,6 +28,7 @@ namespace CardPerso.Library.ModelLayer.Model
                 Id = Convert.ToInt32(record["ID"]),
                 Type = Convert.ToString(record["TYPE"]),
                 Details = Convert.ToString(record["DETAILS"]),
+                OldDetails = Convert.ToString(record["OLDDETAILS"]),
                 Obj = Convert.ToString(record["OBJ"]),
                 RequestedBy = Convert.ToString(record["REQUESTEDBY"]),
                 RequestedOn = Convert.ToDateTime(record["REQUESTEDON"]),

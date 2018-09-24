@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿var p = this;
+p.existingIP = {};
+
+$(document).ready(function () {
     try {
         var currentUrl = window.location.href;
         var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
@@ -152,6 +155,9 @@ $(document).ready(function () {
 });
 
 function format(d) {
+
+    p.existingIP = d;
+
     // `d` is the original data object for the row
     return '<table width="100%" class="cell-border" cellpadding="5" cellspacing="0" border="2" style="padding-left:50px;">' +
         '<tr>' +
@@ -183,19 +189,29 @@ function updateIP() {
         $('#updateBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
         $("#updateBtn").attr("disabled", "disabled");
 
+        var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldData = {
+            Name: p.existingIP.Name,
+            IPAddress: p.existingIP.IPAddress,
+            Description: p.existingIP.Description,
+            Id: p.existingIP.Id,
+            LoggedInUser: username
+        };
+
         var name = $('#name').val();
         var ipAddress = $('#ipAddress').val();
         var description = $('#description').val();
-        var id = $('#id').val();
-        var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+        var id = $('#id').val();        
 
         var data = {
             Name: name,
             IPAddress: ipAddress,
             Description: description,
             Id: id,
-            LoggedInUser: username
-        };
+            LoggedInUser: username,
+            OldData: JSON.stringify(oldData)
+        };       
 
         $.ajax({
             url: settingsManager.websiteURL + 'api/IPAPI/UpdateIP',
