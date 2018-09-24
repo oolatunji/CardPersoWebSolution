@@ -17,7 +17,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2016 16:10:05</publishTime>
     </File>
     <File Include="App_Data/MailTemplates/NewUser.txt">
-      <publishTime>06/02/2018 18:14:51</publishTime>
+      <publishTime>02/06/2018 18:14:51</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>01/25/2016 11:14:07</publishTime>
@@ -77,7 +77,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/25/2016 11:14:06</publishTime>
     </File>
     <File Include="Areas/HelpPage/Views/Web.config">
-      <publishTime>06/02/2018 21:59:04</publishTime>
+      <publishTime>02/06/2018 21:59:04</publishTime>
     </File>
     <File Include="Areas/HelpPage/Views/_ViewStart.cshtml">
       <publishTime>01/25/2016 11:12:52</publishTime>
@@ -95,22 +95,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2016 12:59:22</publishTime>
     </File>
     <File Include="bin/CardPerso.Library.dll">
-      <publishTime>09/24/2018 20:23:38</publishTime>
+      <publishTime>09/24/2018 21:12:16</publishTime>
     </File>
     <File Include="bin/CardPerso.Library.pdb">
-      <publishTime>09/24/2018 20:23:38</publishTime>
+      <publishTime>09/24/2018 21:12:16</publishTime>
     </File>
     <File Include="bin/CardPerso.Web.dll">
-      <publishTime>09/24/2018 20:23:41</publishTime>
+      <publishTime>09/24/2018 21:13:40</publishTime>
     </File>
     <File Include="bin/CardPerso.Web.pdb">
-      <publishTime>09/24/2018 20:23:41</publishTime>
+      <publishTime>09/24/2018 21:13:40</publishTime>
     </File>
     <File Include="bin/FluentValidation.dll">
-      <publishTime>06/01/2018 11:01:22</publishTime>
+      <publishTime>01/06/2018 11:01:22</publishTime>
     </File>
     <File Include="bin/FluentValidation.WebApi.dll">
-      <publishTime>06/01/2018 11:01:24</publishTime>
+      <publishTime>01/06/2018 11:01:24</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>01/25/2016 11:13:58</publishTime>
@@ -122,16 +122,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/25/2016 23:54:50</publishTime>
     </File>
     <File Include="bin/System.ComponentModel.Primitives.dll">
-      <publishTime>11/05/2016 04:55:40</publishTime>
+      <publishTime>05/11/2016 04:55:40</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>02/01/2018 12:17:18</publishTime>
+      <publishTime>01/02/2018 12:17:18</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>01/25/2016 11:13:57</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>02/01/2018 12:17:40</publishTime>
+      <publishTime>01/02/2018 12:17:40</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>01/25/2016 11:14:01</publishTime>
@@ -395,10 +395,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/25/2016 11:17:46</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>06/02/2018 16:07:27</publishTime>
+      <publishTime>02/06/2018 16:07:27</publishTime>
     </File>
     <File Include="Scripts/app/Approval/ApprovalList.js">
-      <publishTime>06/02/2018 21:46:00</publishTime>
+      <publishTime>02/06/2018 21:46:00</publishTime>
     </File>
     <File Include="Scripts/app/Approval/Configuration.js">
       <publishTime>01/31/2016 19:12:37</publishTime>
@@ -407,7 +407,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2018 20:38:59</publishTime>
     </File>
     <File Include="Scripts/app/Branch/AddBranch.js">
-      <publishTime>06/02/2018 19:47:38</publishTime>
+      <publishTime>02/06/2018 19:47:38</publishTime>
     </File>
     <File Include="Scripts/app/Branch/ViewBranch.js">
       <publishTime>09/24/2018 19:36:59</publishTime>
@@ -422,13 +422,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/31/2016 19:27:40</publishTime>
     </File>
     <File Include="Scripts/app/Function/AddFunction.js">
-      <publishTime>06/02/2018 19:45:12</publishTime>
+      <publishTime>02/06/2018 19:45:12</publishTime>
     </File>
     <File Include="Scripts/app/Function/ViewFunction.js">
-      <publishTime>06/02/2018 19:45:40</publishTime>
+      <publishTime>02/06/2018 19:45:40</publishTime>
     </File>
     <File Include="Scripts/app/IP/AddIP.js">
-      <publishTime>06/02/2018 19:51:50</publishTime>
+      <publishTime>02/06/2018 19:51:50</publishTime>
     </File>
     <File Include="Scripts/app/IP/ViewIP.js">
       <publishTime>09/24/2018 20:21:33</publishTime>
@@ -443,13 +443,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/29/2016 00:19:46</publishTime>
     </File>
     <File Include="Scripts/app/Password/ForgotPassword.js">
-      <publishTime>06/02/2018 19:19:10</publishTime>
+      <publishTime>02/06/2018 19:19:10</publishTime>
     </File>
     <File Include="Scripts/app/Password/PasswordReset.js">
-      <publishTime>06/02/2018 19:20:44</publishTime>
+      <publishTime>02/06/2018 19:20:44</publishTime>
     </File>
     <File Include="Scripts/app/Role/AddRole.js">
-      <publishTime>06/02/2018 19:30:35</publishTime>
+      <publishTime>02/06/2018 19:30:35</publishTime>
     </File>
     <File Include="Scripts/app/Role/ViewRole.js">
       <publishTime>09/24/2018 19:26:33</publishTime>
@@ -485,25 +485,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/25/2016 11:19:26</publishTime>
     </File>
     <File Include="Scripts/app/User/AddUser.js">
-      <publishTime>06/02/2018 18:18:13</publishTime>
+      <publishTime>02/06/2018 18:18:13</publishTime>
     </File>
     <File Include="Scripts/app/User/ViewUser.js">
       <publishTime>09/24/2018 19:23:26</publishTime>
     </File>
     <File Include="Scripts/app/Utility/AuditTrail.js">
-      <publishTime>06/02/2018 21:45:25</publishTime>
+      <publishTime>09/24/2018 21:13:29</publishTime>
     </File>
     <File Include="Scripts/app/Utility/configFile.js">
       <publishTime>07/09/2018 12:48:51</publishTime>
     </File>
     <File Include="Scripts/app/Utility/ConfigureSystem.js">
-      <publishTime>06/02/2018 19:59:30</publishTime>
+      <publishTime>02/06/2018 19:59:30</publishTime>
     </File>
     <File Include="Scripts/app/Utility/messageBox.js">
       <publishTime>01/25/2016 11:18:40</publishTime>
     </File>
     <File Include="Scripts/app/Utility/SystemConfiguration.js">
-      <publishTime>06/02/2018 19:59:20</publishTime>
+      <publishTime>02/06/2018 19:59:20</publishTime>
     </File>
     <File Include="Scripts/lib/bootstrap.js">
       <publishTime>01/25/2016 11:18:41</publishTime>
@@ -626,19 +626,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2018 20:27:12</publishTime>
     </File>
     <File Include="Views/Approval/Configuration.cshtml">
-      <publishTime>03/02/2017 22:58:56</publishTime>
+      <publishTime>02/03/2017 22:58:56</publishTime>
     </File>
     <File Include="Views/Approval/ViewApproval.cshtml">
       <publishTime>05/15/2018 20:27:05</publishTime>
     </File>
     <File Include="Views/Branch/AddBranch.cshtml">
-      <publishTime>06/02/2018 15:39:45</publishTime>
+      <publishTime>02/06/2018 15:39:45</publishTime>
     </File>
     <File Include="Views/Branch/ViewBranch.cshtml">
-      <publishTime>06/02/2018 15:39:50</publishTime>
+      <publishTime>02/06/2018 15:39:50</publishTime>
     </File>
     <File Include="Views/Card/RetrieveCards.cshtml">
-      <publishTime>09/01/2018 20:59:07</publishTime>
+      <publishTime>01/09/2018 20:59:07</publishTime>
     </File>
     <File Include="Views/Function/AddFunction.cshtml">
       <publishTime>01/27/2016 14:56:45</publishTime>
@@ -647,7 +647,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2016 20:30:42</publishTime>
     </File>
     <File Include="Views/Home/Dashboard.cshtml">
-      <publishTime>06/02/2018 15:20:02</publishTime>
+      <publishTime>02/06/2018 15:20:02</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>01/26/2016 18:52:11</publishTime>
@@ -668,10 +668,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/25/2016 11:12:52</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/02/2018 15:20:15</publishTime>
+      <publishTime>02/06/2018 15:20:15</publishTime>
     </File>
     <File Include="Views/System/AuditTrail.cshtml">
-      <publishTime>06/02/2018 21:47:39</publishTime>
+      <publishTime>02/06/2018 21:47:39</publishTime>
     </File>
     <File Include="Views/System/Configuration.cshtml">
       <publishTime>05/15/2018 17:04:33</publishTime>
@@ -689,7 +689,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2016 15:03:43</publishTime>
     </File>
     <File Include="Views/User/AddUser.cshtml">
-      <publishTime>06/02/2018 15:48:28</publishTime>
+      <publishTime>02/06/2018 15:48:28</publishTime>
     </File>
     <File Include="Views/User/ChangePassword.cshtml">
       <publishTime>01/28/2016 15:56:45</publishTime>
@@ -701,10 +701,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/29/2016 00:50:34</publishTime>
     </File>
     <File Include="Views/User/ViewUser.cshtml">
-      <publishTime>06/02/2018 18:35:41</publishTime>
+      <publishTime>02/06/2018 18:35:41</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>06/02/2018 21:59:04</publishTime>
+      <publishTime>02/06/2018 21:59:04</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>01/25/2016 11:12:52</publishTime>

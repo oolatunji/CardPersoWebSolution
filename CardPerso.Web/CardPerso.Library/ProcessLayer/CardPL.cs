@@ -117,6 +117,7 @@ namespace CardPerso.Library.ProcessLayer
                             AuditTrail obj = new AuditTrail();
                             obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.ResetCardPrintStatus);
                             obj.Details = JsonConvert.SerializeObject(card);
+                            obj.OldDetails = JsonConvert.SerializeObject(oldCardData);
                             obj.RequestedBy = username;
                             obj.RequestedOn = System.DateTime.Now;
                             obj.ApprovedBy = username;

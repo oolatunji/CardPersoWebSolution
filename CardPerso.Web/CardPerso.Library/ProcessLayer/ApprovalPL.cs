@@ -207,6 +207,7 @@ namespace CardPerso.Library.ProcessLayer
             AuditTrail audit = new AuditTrail();
             audit.Type = approval.Type;
             audit.Details = approval.Details;
+            audit.OldDetails = approval.OldDetails;
             audit.RequestedBy = approval.RequestedBy;
             audit.RequestedOn = approval.RequestedOn;
             audit.ApprovedBy = approval.ApprovedBy;

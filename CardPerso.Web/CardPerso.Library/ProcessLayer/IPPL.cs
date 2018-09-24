@@ -162,6 +162,7 @@ namespace CardPerso.Library.ProcessLayer
                             AuditTrail obj = new AuditTrail();
                             obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UpdateIP);
                             obj.Details = JsonConvert.SerializeObject(ip);
+                            obj.OldDetails = JsonConvert.SerializeObject(oldIP);
                             obj.RequestedBy = username;
                             obj.RequestedOn = System.DateTime.Now;
                             obj.ApprovedBy = username;

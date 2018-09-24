@@ -11,6 +11,7 @@ namespace CardPerso.Library.ModelLayer.Model
     {
         public string Type { get; set; }
         public string Details { get; set; }
+        public string OldDetails { get; set; }
         public string RequestedBy { get; set; }
         public DateTime RequestedOn { get; set; }
         public string RequestedDate { get; set; }
@@ -26,6 +27,7 @@ namespace CardPerso.Library.ModelLayer.Model
                 Type = Convert.ToString(record["TYPE"]),
                 ClientIP = Convert.ToString(record["CLIENTIP"]),
                 Details = Convert.ToString(record["DETAILS"]),
+                OldDetails = Convert.ToString(record["OLDDETAILS"]),
                 RequestedBy = Convert.ToString(record["REQUESTEDBY"]),
                 RequestedDate = String.Format("{0:d/M/yyyy HH:mm:ss}", Convert.ToDateTime(record["REQUESTEDON"])),
                 ApprovedBy = record["APPROVEDBY"] != null ? Convert.ToString(record["APPROVEDBY"]) : string.Empty,
