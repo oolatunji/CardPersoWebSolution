@@ -299,6 +299,147 @@ namespace CardPerso.Library.ProcessLayer
             }
         }
 
+        public static Response LockUser(string username)
+        {
+            try
+            {
+                if (UserDL.UserExists(username))
+                {
+                    if (UserDL.UpdateUserLockedStatus(username, 1))
+                    {
+                        return new Response
+                        {
+                            SuccessMsg = "Your account has been locked",
+                            ErrorMsg = string.Empty
+                        };
+                    }
+                    else
+                    {
+                        return new Response
+                        {
+                            SuccessMsg = string.Empty,
+                            ErrorMsg = "Operation failed"
+                        };
+                    }
+                }  
+                else
+                {
+                    return new Response
+                    {
+                        SuccessMsg = string.Empty,
+                        ErrorMsg = string.Empty
+                    };
+                }              
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.WriteError(ex);
+                return new Response
+                {
+                    SuccessMsg = string.Empty,
+                    ErrorMsg = ex.Message
+                };
+            }
+        }
+
+        public static Response UnlockUser(User user, User oldUserData, string username, bool overrideApproval)
+        {
+            try
+            {
+                if (!overrideApproval)
+                {
+                    bool logForApproval = ApprovalConfigurationDL.RetrieveByType(StatusUtil.GetDescription(StatusUtil.ApprovalType.UnlockUser)).Approve;
+
+                    if (logForApproval)
+                    {
+                        Approval approvalObj = new Approval();
+                        approvalObj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UnlockUser);
+                        approvalObj.Details = JsonConvert.SerializeObject(user);
+                        approvalObj.OldDetails = JsonConvert.SerializeObject(oldUserData);
+                        approvalObj.Obj = JsonConvert.SerializeObject(user);
+                        approvalObj.RequestedBy = username;
+                        approvalObj.RequestedOn = System.DateTime.Now;
+                        approvalObj.Status = StatusUtil.ApprovalStatus.Pending.ToString();
+
+                        if (ApprovalDL.Save(approvalObj))
+                        {
+                            return new Response
+                            {
+                                SuccessMsg = "Unlock User request was successfully logged for approval",
+                                ErrorMsg = string.Empty
+                            };
+                        }
+                        else
+                        {
+                            return new Response
+                            {
+                                SuccessMsg = string.Empty,
+                                ErrorMsg = "Operation failed"
+                            };
+                        }
+                    }
+                    else
+                    {
+                        if (UserDL.UpdateUserLockedStatus(user.Username, 0))
+                        {
+                            AuditTrail obj = new AuditTrail();
+                            obj.Type = StatusUtil.GetDescription(StatusUtil.ApprovalType.UnlockUser);
+                            obj.Details = JsonConvert.SerializeObject(user);
+                            obj.OldDetails = JsonConvert.SerializeObject(oldUserData);
+                            obj.RequestedBy = username;
+                            obj.RequestedOn = System.DateTime.Now;
+                            obj.ApprovedBy = username;
+                            obj.ApprovedOn = System.DateTime.Now;
+                            obj.ClientIP = user.ClientIP;
+                            AuditTrailDL.Save(obj);
+
+                            return new Response
+                            {
+                                SuccessMsg = "User unlocked successfully",
+                                ErrorMsg = string.Empty
+                            };
+                        }
+                        else
+                        {
+                            return new Response
+                            {
+                                SuccessMsg = string.Empty,
+                                ErrorMsg = "Operation failed"
+                            };
+                        }
+                    }
+                }
+                else
+                {
+                    if (UserDL.UpdateUserLockedStatus(user.Username, 0))
+                    {
+                        return new Response
+                        {
+                            SuccessMsg = "User unlocked successfully",
+                            ErrorMsg = string.Empty
+                        };
+                    }
+                    else
+                    {
+                        return new Response
+                        {
+                            SuccessMsg = string.Empty,
+                            ErrorMsg = "Operation failed"
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.WriteError(ex);
+                return new Response
+                {
+                    SuccessMsg = string.Empty,
+                    ErrorMsg = ex.Message
+                };
+            }
+        }
+
         public static Response RetrieveAll()
         {
             try
@@ -335,7 +476,7 @@ namespace CardPerso.Library.ProcessLayer
                 if (useActiveDirectory)
                 {
                     var adAuthenticatorService = new ADAuthenticatorService.ADAuthenticator();
-                    var authResponse = adAuthenticatorService.getUserStatus(user.Username, user.Password);
+                    var authResponse = adAuthenticatorService.getUserStatus(user.Username, user.Password);                    
                     var responseCode = authResponse.Split('|')[0];
                     if (responseCode == "00")
                     {
@@ -376,7 +517,8 @@ namespace CardPerso.Library.ProcessLayer
 
                     response.ErrorMsg = string.Empty;
                     response.DynamicList = new { data = authenticatedUser };
-                    response.BranchId = authenticatedUser.UserBranch.Id;
+                    response.BranchCode = authenticatedUser.UserBranch.Code;
+                    response.BranchId = authenticatedUser.UserBranch.Id;          
                 }
                 else
                 {

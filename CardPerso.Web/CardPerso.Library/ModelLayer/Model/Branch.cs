@@ -28,7 +28,8 @@ namespace CardPerso.Library.ModelLayer.Model
             return new Branch
             {
                 Id = Convert.ToInt32(record["BRANCHID"]),
-                Name = Convert.ToString(record["BRANCHNAME"])
+                Name = Convert.ToString(record["BRANCHNAME"]),
+                Code = Convert.ToString(record["BRANCHCODE"])
             };
         }
     }

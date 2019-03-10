@@ -22,7 +22,7 @@ namespace CardPerso.Library.DataLayer
                 var password = PasswordHash.SHA256Hash(user.Password);
 
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO SYSTEMUSERS(LASTNAME, OTHERNAMES, GENDER, EMAILADDRESS, USERNAME, PASSWORD, ROLEID, CREATEDON, BranchId) VALUES(:lastname, :othernames, :gender, :email, :username, :password, :roleid, :createdon, :branchid) RETURNING ID INTO :id";
+                cmd.CommandText = "INSERT INTO SYSTEMUSERS(LASTNAME, OTHERNAMES, GENDER, EMAILADDRESS, USERNAME, PASSWORD, ROLEID, CREATEDON, BranchId, LOCKEDSTATUS) VALUES(:lastname, :othernames, :gender, :email, :username, :password, :roleid, :createdon, :branchid, :locked) RETURNING ID INTO :id";
                 cmd.Parameters.Add(":lastname", OracleDbType.Varchar2, user.LastName, ParameterDirection.Input);
                 cmd.Parameters.Add(":othernames", OracleDbType.Varchar2, user.Othernames, ParameterDirection.Input);
                 cmd.Parameters.Add(":gender", OracleDbType.Varchar2, user.Gender, ParameterDirection.Input);
@@ -32,6 +32,7 @@ namespace CardPerso.Library.DataLayer
                 cmd.Parameters.Add(":roleid", OracleDbType.Int32, user.RoleId, ParameterDirection.Input);                
                 cmd.Parameters.Add(":createdon", OracleDbType.Date, user.CreatedOn, ParameterDirection.Input);
                 cmd.Parameters.Add(":branchid", OracleDbType.Int32, user.BranchId, ParameterDirection.Input);
+                cmd.Parameters.Add(":locked", OracleDbType.Int32, 0, ParameterDirection.Input);
 
                 OracleParameter outputParameter = new OracleParameter("id", OracleDbType.Int32);
                 outputParameter.Direction = ParameterDirection.Output;
@@ -42,21 +43,7 @@ namespace CardPerso.Library.DataLayer
                 {                    
                     Mail.SendNewUserMail(user);
                     result = true;
-                    txn.Commit();
-                    //var userId = Convert.ToInt32(outputParameter.Value.ToString());
-
-                    //OracleCommand command = conn.CreateCommand();
-                    //command.CommandText = "INSERT INTO USERDETAILS(ID1, VUSERNAME, VPASSWORD, VOFFICIALEMAIL) VALUES(:id, :username, :password, :email)";
-                    //command.Parameters.Add(":id", OracleDbType.Int32, userId, ParameterDirection.Input);
-                    //command.Parameters.Add(":username", OracleDbType.Varchar2, user.Username, ParameterDirection.Input);
-                    //command.Parameters.Add(":password", OracleDbType.Varchar2, user.Password, ParameterDirection.Input);
-                    //command.Parameters.Add(":email", OracleDbType.Varchar2, user.Email, ParameterDirection.Input);
-
-                    //rowsInserted = command.ExecuteNonQuery();
-                    //if (rowsInserted > 0)
-                    //{
-
-                    //}
+                    txn.Commit();                    
                 }
 
                 OracleDL.close(conn);
@@ -94,19 +81,7 @@ namespace CardPerso.Library.DataLayer
                 if (rowsUpdated > 0)
                 {
                     result = true;
-                    txn.Commit();
-                    //cmd = conn.CreateCommand();
-                    //cmd.CommandText = @"UPDATE USERDETAILS SET 
-                    //                    VOFFICIALEMAIL = :email
-                    //                    WHERE ID1 =:id";
-                    //cmd.Parameters.Add(":email", OracleDbType.Varchar2, user.Email, ParameterDirection.Input);
-                    //cmd.Parameters.Add(":id", OracleDbType.Int32, user.Id, ParameterDirection.Input);
-
-                    //rowsUpdated = cmd.ExecuteNonQuery();
-                    //if (rowsUpdated > 0)
-                    //{
-
-                    //}
+                    txn.Commit();                    
                 }
 
                 OracleDL.close(conn);
@@ -166,6 +141,38 @@ namespace CardPerso.Library.DataLayer
             }
         }
 
+        public static bool UpdateUserLockedStatus(string username, int lockedValue)
+        {
+            bool result = false;
+            var conn = OracleDL.connect();
+            OracleTransaction txn = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            try
+            {                
+                OracleCommand cmd = conn.CreateCommand();
+                cmd.CommandText = @"UPDATE SYSTEMUSERS SET
+                                    LOCKEDSTATUS = :lockedValue
+                                    WHERE USERNAME = :username";
+                cmd.Parameters.Add(":lockedValue", OracleDbType.Int32, lockedValue, ParameterDirection.Input);
+                cmd.Parameters.Add(":username", OracleDbType.Varchar2, username, ParameterDirection.Input);
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+                if (rowsUpdated > 0)
+                {
+                    result = true;
+                    txn.Commit();                    
+                }
+
+                OracleDL.close(conn);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                txn.Rollback();
+                throw ex;
+            }
+        }
+
         public static bool UserExists(string username)
         {
             try
@@ -175,7 +182,7 @@ namespace CardPerso.Library.DataLayer
                 var conn = OracleDL.connect();
 
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SB.NAME AS BRANCHNAME  
+                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SR.SUPERADMINROLE, SB.NAME AS BRANCHNAME, SB.CODE AS BRANCHCODE  
                                     FROM SYSTEMUSERS SU
                                     INNER JOIN SYSTEMROLES SR ON SU.ROLEID = SR.ID
                                     INNER JOIN SYSTEMBRANCHES SB ON SU.BRANCHID = SB.ID 
@@ -207,7 +214,7 @@ namespace CardPerso.Library.DataLayer
 
                 var conn = OracleDL.connect();
 
-                string query = @"SELECT SU.*, SR.NAME AS ROLENAME, SB.NAME AS BRANCHNAME  
+                string query = @"SELECT SU.*, SR.NAME AS ROLENAME, SR.SUPERADMINROLE, SB.NAME AS BRANCHNAME, SB.CODE AS BRANCHCODE  
                                  FROM SYSTEMUSERS SU
                                  INNER JOIN SYSTEMROLES SR ON SU.ROLEID = SR.ID
                                  INNER JOIN SYSTEMBRANCHES SB ON SU.BRANCHID = SB.ID";
@@ -241,7 +248,7 @@ namespace CardPerso.Library.DataLayer
                 var conn = OracleDL.connect();
 
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SB.NAME AS BRANCHNAME  
+                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SR.SUPERADMINROLE, SB.NAME AS BRANCHNAME, SB.CODE AS BRANCHCODE  
                                     FROM SYSTEMUSERS SU
                                     INNER JOIN SYSTEMROLES SR ON SU.ROLEID = SR.ID
                                     INNER JOIN SYSTEMBRANCHES SB ON SU.BRANCHID = SB.ID 
@@ -275,7 +282,7 @@ namespace CardPerso.Library.DataLayer
                 var conn = OracleDL.connect();
 
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SB.NAME AS BRANCHNAME  
+                cmd.CommandText = @"SELECT SU.*, SR.NAME AS ROLENAME, SR.SUPERADMINROLE, SB.NAME AS BRANCHNAME, SB.CODE AS BRANCHCODE  
                                     FROM SYSTEMUSERS SU
                                     INNER JOIN SYSTEMROLES SR ON SU.ROLEID = SR.ID
                                     INNER JOIN SYSTEMBRANCHES SB ON SU.BRANCHID = SB.ID 

@@ -13,5 +13,6 @@ namespace CardPerso.Library.ModelLayer.Utility
         public string ErrorMsg { get; set; }
         public object DynamicList { get; set; }
         public int BranchId { get; set; }
+        public string BranchCode { get; set; }
     }
 }

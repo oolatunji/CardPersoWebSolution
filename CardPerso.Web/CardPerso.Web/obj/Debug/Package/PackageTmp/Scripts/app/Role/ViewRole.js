@@ -79,6 +79,7 @@ function getRoles(functions) {
                 "defaultContent": ''
             },
             { "data": "Name" },
+            { "data": "SuperAdminRole" },
             {
                 "data": "Functions",
                 "visible": false
@@ -199,6 +200,14 @@ function format(d, allfunctions) {
     table += '<td><input class="form-control" placeholder="Enter Role Name" id="name" value="' + d.Name + '"/></td>';
     table += '</tr>';
     table += '<tr>';
+    table += '<td style="color:navy;width:20%;font-family:Arial;">Super Admin Role:</td>';
+    if (d.SuperAdminRole == 'Yes') {
+        table += '<td><input type="checkbox" id="superAdminRole" checked="checked"/></td>';
+    } else {
+        table += '<td><input type="checkbox" id="superAdminRole"/></td>';
+    }    
+    table += '</tr>';
+    table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Arial;">Functions:</td>';
     table += '<td>';
     $.each(allfunctions, function (key, value) {
@@ -267,12 +276,14 @@ function update() {
 
         var oldData = {
             Name: p.existingRole.Name,
+            SuperAdminRole: p.existingRole.SuperAdminRole,
             Functions: oldFunctions,
             LoggedInUser: username,
             Id: p.existingRole.Id,
         };
 
         var name = $('#name').val();
+        var superAdminRole = $('#superAdminRole').is(":checked") ? 'Yes' : 'No';
 
         var functions = [];
         $("input:checkbox[name=functions]:checked").each(function () {
@@ -292,6 +303,7 @@ function update() {
             Name: name,
             Functions: functions,
             LoggedInUser: username,
+            SuperAdminRole: superAdminRole,
             Id: id,
             OldData: JSON.stringify(oldData)
         };       

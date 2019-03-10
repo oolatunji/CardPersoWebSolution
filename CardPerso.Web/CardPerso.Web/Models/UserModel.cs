@@ -25,7 +25,9 @@ namespace CardPerso.Web.Models
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         [DisplayName("Branch")]
-        public int BranchId { get; set; }        
+        public int BranchId { get; set; }
+        [DisplayName("Locked")]
+        public bool Locked { get; set; }
         public string BranchName { get; set; }
         public string LoggedInUser { get; set; }
         public string OldData { get; set; }

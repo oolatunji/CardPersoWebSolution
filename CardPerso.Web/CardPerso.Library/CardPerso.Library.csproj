@@ -80,6 +80,7 @@
     <Compile Include="ModelLayer\Model\SearhFilter.cs" />
     <Compile Include="ModelLayer\Model\SystemIdManager.cs" />
     <Compile Include="ModelLayer\Model\User.cs" />
+    <Compile Include="ModelLayer\Model\UserDto.cs" />
     <Compile Include="ModelLayer\Utility\ActiveDirectoryHelper.cs" />
     <Compile Include="ModelLayer\Utility\Base64Conversions.cs" />
     <Compile Include="ModelLayer\Utility\Crypter.cs" />

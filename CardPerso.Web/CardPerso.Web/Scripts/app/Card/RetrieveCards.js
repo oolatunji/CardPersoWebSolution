@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     try {
         var currentUrl = window.location.href;
-        var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
+        var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));        
         var userFunctions = user.Function;
 
         var exist = false;
@@ -84,6 +84,12 @@ function getBranches() {
             $.each(roles, function (key, value) {
                 $('#userBranch').append('<option value="' + value.Id + '">' + value.Name + '</option>');
             });
+
+            var user = JSON.parse(window.sessionStorage.getItem("loggedInUser"));
+            if (user.UserRole.SuperAdminRole == 'No') {
+                $('#userBranch').prop('disabled', 'disabled');
+                $('#userBranch').val(user.UserBranch.Id);
+            }
 
             searchCards();
         },

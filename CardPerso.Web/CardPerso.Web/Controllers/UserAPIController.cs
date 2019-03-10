@@ -14,6 +14,7 @@ using System.Web.Http;
 
 namespace CardPerso.Web.Controllers
 {
+    [RoutePrefix("api/UserAPI")]
     public class UserAPIController : ApiController
     {
         [HttpPost]
@@ -59,12 +60,49 @@ namespace CardPerso.Web.Controllers
         }
 
         [HttpPut]
+        public HttpResponseMessage UnlockUser([FromBody]UserModel model)
+        {
+            try
+            {
+                User user = Mapper.Map<User>(model);
+                UserModel oldUserModel = JsonConvert.DeserializeObject<UserModel>(model.OldData);
+                User oldUserData = Mapper.Map<User>(oldUserModel);
+
+                user.ClientIP = HttpContext.Current.Request.UserHostAddress;
+                oldUserData.ClientIP = user.ClientIP;
+
+                Response result = UserPL.UnlockUser(user, oldUserData, model.LoggedInUser, false);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.WriteError(ex);
+                return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = ex.Message });
+            }
+        }
+
+        [HttpPut]
         public HttpResponseMessage ChangePassword([FromBody]PasswordModel model)
         {
             try
             {
                 User user = Mapper.Map<User>(model);
                 Response result = UserPL.UpdatePassword(user);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.WriteError(ex);
+                return Request.CreateResponse(HttpStatusCode.OK, new Response { SuccessMsg = string.Empty, ErrorMsg = ex.Message });
+            }
+        }       
+
+        [HttpPut, Route("LockUser/{username}")]
+        public HttpResponseMessage LockUser(string username)
+        {
+            try
+            {                
+                Response result = UserPL.LockUser(username);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

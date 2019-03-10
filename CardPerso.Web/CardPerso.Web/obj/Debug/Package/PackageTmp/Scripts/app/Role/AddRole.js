@@ -51,6 +51,7 @@ function addRole() {
     try {
         var username = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
         var roleName = $('#roleName').val();
+        var superAdminRole = $('#superAdminRole').is(":checked") ? 'Yes' : 'No';
         var functions = [];
         $("input:checkbox[name=functions]:checked").each(function () {
             var _function = {
@@ -65,6 +66,7 @@ function addRole() {
 
         var data = {
             Name: roleName,
+            SuperAdminRole: superAdminRole,
             Functions: functions,
             LoggedInUser: username
         };

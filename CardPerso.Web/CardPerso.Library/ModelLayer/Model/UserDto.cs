@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CardPerso.Library.ModelLayer.Model
 {
-    public class RoleDto : BaseModel
+    public class UserDto
     {
-        public string SuperAdminRole { get; set; }
-        public List<Function> Functions { get; set; }
+        public User data { get; set; }
     }
 }

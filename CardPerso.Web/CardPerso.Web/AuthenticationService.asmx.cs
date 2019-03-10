@@ -130,6 +130,7 @@ namespace CardPerso.Web
             if (string.IsNullOrEmpty(validatedUser.ErrorMsg))
             {
                 response.IsSuccessful = true;
+                response.BranchCode = validatedUser.BranchCode;
                 response.BranchId = validatedUser.BranchId;
                 response.FailureReason = string.Empty;
 

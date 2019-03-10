@@ -38,10 +38,12 @@ namespace CardPerso.Library.ModelLayer.Utility
             CreateUser,
             [Description("Update User")]
             UpdateUser,
+            [Description("Unlock User")]
+            UnlockUser,
             [Description("Create Role")]
             CreateRole,
             [Description("Update Role")]
-            UpdateRole,           
+            UpdateRole,
             [Description("Create Allowed IP")]
             CreateIP,
             [Description("Update Allowed IP")]

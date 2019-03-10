@@ -11,6 +11,7 @@ namespace CardPerso.Library.ModelLayer.Model
     {
         public Function Function { get; set; }
         public Function[] Functions { get; set; }
+        public string SuperAdminRole { get; set; }
 
         public static Role Transform(OracleDataReader record, bool getFunction)
         {
@@ -18,7 +19,8 @@ namespace CardPerso.Library.ModelLayer.Model
             {
                 Id = Convert.ToInt32(record["ROLEID"]),
                 Name = Convert.ToString(record["ROLENAME"]),
-                Function = getFunction ? Function.Transform(record) : null
+                Function = getFunction ? Function.Transform(record) : null,
+                SuperAdminRole = record["SUPERADMINROLE"] != DBNull.Value ? Convert.ToString(record["SUPERADMINROLE"]) : "No"
             };
         }
     }

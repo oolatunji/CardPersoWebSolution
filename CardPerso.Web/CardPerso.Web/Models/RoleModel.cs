@@ -14,6 +14,7 @@ namespace CardPerso.Web.Models
         public int Id { get; set; }        
         public string Name { get; set; }        
         public FuncModel[] Functions { get; set; }
+        public string SuperAdminRole { get; set; }
 
         public string LoggedInUser { get; set; }
         public string OldData { get; set; }

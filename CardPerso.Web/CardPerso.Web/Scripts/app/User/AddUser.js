@@ -62,6 +62,21 @@
                 }
             });
         }
+
+        var usernameCtrl = $("#username");
+
+        usernameCtrl.keyup(function (e) {
+            var username = usernameCtrl.val().toLocaleLowerCase();
+            usernameCtrl.val(username);
+        });
+
+        var emailAddressCtrl = $("#emailAddress");
+
+        emailAddressCtrl.keyup(function (e) {
+            var emailAddress = emailAddressCtrl.val().toLocaleLowerCase();
+            emailAddressCtrl.val(emailAddress);
+        });
+
     } catch (err) {
         displayMessage("error", "Error encountered: " + err, "User Management");
     }

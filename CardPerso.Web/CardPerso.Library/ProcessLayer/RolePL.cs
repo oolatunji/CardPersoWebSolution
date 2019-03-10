@@ -223,16 +223,16 @@ namespace CardPerso.Library.ProcessLayer
             try
             {
                 var roles = RoleDL.RetrieveAll();
-                
+
                 var returnedRoles = new List<RoleDto>();
 
                 var roleDict = new Dictionary<string, RoleDto>();
 
-                if(roles.Any())
+                if (roles.Any())
                 {
                     roles.ForEach(role =>
                     {
-                        if(roleDict.ContainsKey(role.Name))
+                        if (roleDict.ContainsKey(role.Name))
                         {
                             roleDict[role.Name].Functions.Add(role.Function);
                         }
@@ -240,9 +240,11 @@ namespace CardPerso.Library.ProcessLayer
                         {
                             var roleFunctions = new List<Function>();
                             roleFunctions.Add(role.Function);
-                            roleDict.Add(role.Name, new RoleDto() {
+                            roleDict.Add(role.Name, new RoleDto()
+                            {
                                 Id = role.Id,
                                 Name = role.Name,
+                                SuperAdminRole = role.SuperAdminRole,
                                 Functions = roleFunctions
                             });
                         }
@@ -253,7 +255,7 @@ namespace CardPerso.Library.ProcessLayer
                             returnedRoles.Add(roleDict[key]);
                         });
                 }
-               
+
                 return new Response
                 {
                     DynamicList = new { data = returnedRoles }

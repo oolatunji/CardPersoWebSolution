@@ -19,8 +19,9 @@ namespace CardPerso.Library.DataLayer
             try
             {
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO SYSTEMROLES(NAME) VALUES(:name) RETURNING ID INTO :id";
+                cmd.CommandText = "INSERT INTO SYSTEMROLES(NAME, SUPERADMINROLE) VALUES(:name, :superadminrole) RETURNING ID INTO :id";
                 cmd.Parameters.Add(":name", OracleDbType.Varchar2, role.Name, ParameterDirection.Input);
+                cmd.Parameters.Add(":superadminrole", OracleDbType.Varchar2, role.SuperAdminRole, ParameterDirection.Input);
 
                 OracleParameter outputParameter = new OracleParameter("id", OracleDbType.Int32);
                 outputParameter.Direction = ParameterDirection.Output;
@@ -63,8 +64,9 @@ namespace CardPerso.Library.DataLayer
             try
             {
                 OracleCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "UPDATE SYSTEMROLES SET NAME = :name WHERE ID = :id";
+                cmd.CommandText = "UPDATE SYSTEMROLES SET NAME = :name, SUPERADMINROLE = :superadminrole  WHERE ID = :id";
                 cmd.Parameters.Add(":name", OracleDbType.Varchar2, role.Name, ParameterDirection.Input);
+                cmd.Parameters.Add(":superadminrole", OracleDbType.Varchar2, role.SuperAdminRole, ParameterDirection.Input);
                 cmd.Parameters.Add(":id", OracleDbType.Int32, role.Id, ParameterDirection.Input);
 
                 int rowsInserted = cmd.ExecuteNonQuery();
@@ -146,10 +148,7 @@ namespace CardPerso.Library.DataLayer
 
                 var conn = OracleDL.connect();
 
-                string query = @"SELECT SR.ID AS ROLEID, SR.NAME AS ROLENAME, SF.ID, SF.NAME, SF.PAGELINK
-                                 FROM SYSTEMROLES SR
-                                 INNER JOIN SYSTEMROLEFUNCTIONS SRF ON SR.ID = SRF.ROLEID
-                                 INNER JOIN SYSTEMFUNCTIONS SF ON SRF.FUNCTIONID = SF.ID";
+                string query = @"SELECT SR.ID AS ROLEID, SR.NAME AS ROLENAME, SR.SUPERADMINROLE, SF.ID, SF.NAME, SF.PAGELINK FROM SYSTEMROLES SR INNER JOIN SYSTEMROLEFUNCTIONS SRF ON SR.ID = SRF.ROLEID INNER JOIN SYSTEMFUNCTIONS SF ON SRF.FUNCTIONID = SF.ID";
 
                 OracleCommand cmd = conn.CreateCommand();
                 cmd.CommandText = query;

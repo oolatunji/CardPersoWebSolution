@@ -105,6 +105,7 @@ function getUsers() {
             { "data": "Username" },
             { "data": "UserRole.Name" },
             { "data": "UserBranch.Name" },
+            { "data": "Locked" },
             {
                 "data": "Gender",
                 "visible": false
@@ -289,7 +290,12 @@ function format(d) {
     table += '</tr>';
     table += '<tr>';
     table += '<td style="color:navy;width:20%;font-family:Calibri;"></td>';
-    table += '<td><button type="button"  id="updateBtn" class="btn btn-blue" style="float:right;" onclick="update();"><i class="fa fa-cog"></i> Update</button></td>';
+    table += '<td>';    
+    table += '<button type="button"  id="updateBtn" class="btn btn-blue" style="float:right;" onclick="update();"><i class="fa fa-cog"></i> Update</button>';
+    if (d.Locked) {
+        table += '<button type="button"  id="unlockBtn" class="btn btn-dark" style="float:right;margin-right:10px;" onclick="unlock();"><i class="fa fa-unlock"></i> Unlock</button>';
+    }
+    table += '</td>';
     table += '</tr>';
     table += '</table>';
 
@@ -390,5 +396,85 @@ function update() {
         displayMessage("error", "Error encountered: " + err, "User Management");
         $("#updateBtn").removeAttr("disabled");
         $('#updateBtn').html('<i class="fa fa-cog"></i> Update');
+    }
+}
+
+function unlock() {
+    try {
+        $('#unlockBtn').html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+        $("#unlockBtn").attr("disabled", "disabled");
+
+        var lastname = $('#lastname').val();
+        var othernames = $('#othernames').val();
+        var gender = $('#gender').val();
+        var email = $('#email').val();
+        var userRole = $('#role').val();
+        var userRoleName = $('#role option:selected').html();
+        var userBranch = $('#branch').val();
+        var userBranchName = $('#branch option:selected').html();
+        var username = $('#username').val();
+        var id = $('#id').val();
+
+        var loggedInUsername = JSON.parse(window.sessionStorage.getItem("loggedInUser")).Username;
+
+        var oldData = {
+            LastName: p.existingUser.LastName,
+            Othernames: p.existingUser.Othernames,
+            Gender: p.existingUser.Gender,
+            Email: p.existingUser.Email,
+            Username: p.existingUser.Username,
+            RoleId: p.existingUser.UserRole.Id,
+            LoggedInUser: loggedInUsername,
+            RoleName: p.existingUser.UserRole.Name,
+            BranchId: p.existingUser.UserBranch.Id,
+            BranchName: p.existingUser.UserBranch.Name,
+            ID: p.existingUser.Id,
+            Locked: true,
+        };
+
+        var data = {
+            Lastname: lastname,
+            Othernames: othernames,
+            Gender: gender,
+            Email: email,
+            Username: username,
+            RoleId: userRole,
+            LoggedInUser: loggedInUsername,
+            RoleName: userRoleName,
+            BranchId: userBranch,
+            BranchName: userBranchName,
+            Id: id,
+            OldData: JSON.stringify(oldData)
+        };
+
+        $.ajax({
+            url: settingsManager.websiteURL + 'api/UserAPI/UnlockUser',
+            type: 'PUT',
+            data: data,
+            processData: true,
+            async: true,
+            cache: false,
+            success: function (response) {
+                if (!_.isEmpty(response.SuccessMsg)) {
+                    displayMessage("success", response.SuccessMsg, "User Management");
+                    refreshResult();
+                } else if (!_.isEmpty(response.ErrorMsg)) {
+                    displayMessage("error", 'Error experienced: ' + response.ErrorMsg, "User Management");
+                }
+                $("#unlockBtn").removeAttr("disabled");
+                $('#unlockBtn').html('<i class="fa fa-unlock"></i> Unlock');
+            },
+            error: function (xhr) {
+                var errMessage = JSON.parse(xhr.responseText).Message;
+                displayMessage("error", errMessage, "User Management");
+                $("#unlockBtn").removeAttr("disabled");
+                $('#unlockBtn').html('<i class="fa fa-unlock"></i> Unlock');
+            }
+        });
+
+    } catch (err) {
+        displayMessage("error", "Error encountered: " + err, "User Management");
+        $("#unlockBtn").removeAttr("disabled");
+        $('#unlockBtn').html('<i class="fa fa-unlock"></i> Unlock');
     }
 }

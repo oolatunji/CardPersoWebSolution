@@ -198,6 +198,11 @@ namespace CardPerso.Library.ProcessLayer
                 var obj = JsonConvert.DeserializeObject<User>(approval.Obj);
                 response = UserPL.Update(obj, null, string.Empty, true);
             }
+            else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.UnlockUser)))
+            {
+                var obj = JsonConvert.DeserializeObject<User>(approval.Obj);
+                response = UserPL.UnlockUser(obj, null, string.Empty, true);
+            }
             else if (approval.Type.Equals(StatusUtil.GetDescription(StatusUtil.ApprovalType.ResetCardPrintStatus)))
             {
                 var obj = JsonConvert.DeserializeObject<Card>(approval.Obj);

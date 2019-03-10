@@ -23,22 +23,24 @@ namespace CardPerso.Library.ModelLayer.Model
         public Branch UserBranch { get; set; }
         public DateTime CreatedOn { get; set; }
         public List<Function> Function { get; set; }
+        public bool Locked { get; set; } //0 for unlocked, 1 for locked
 
         public static User Transform(OracleDataReader record)
-        {            
-            return new User
-            {
-                Id = Convert.ToInt32(record["ID"]),
-                LastName = Convert.ToString(record["LASTNAME"]),
-                Othernames = Convert.ToString(record["OTHERNAMES"]),
-                Gender = Convert.ToString(record["GENDER"]),
-                Email = Convert.ToString(record["EMAILADDRESS"]),
-                Username = Convert.ToString(record["USERNAME"]),
-                Password = Convert.ToString(record["PASSWORD"]),
-                UserRole = Role.Transform(record, false),
-                UserBranch = Branch.TransformBranch(record),
-                CreatedOn = Convert.ToDateTime(record["CREATEDON"]),                
-            };
+        {
+            var user = new User();
+            user.Id = Convert.ToInt32(record["ID"]);
+            user.LastName = Convert.ToString(record["LASTNAME"]);
+            user.Othernames = Convert.ToString(record["OTHERNAMES"]);
+            user.Gender = Convert.ToString(record["GENDER"]);
+            user.Email = Convert.ToString(record["EMAILADDRESS"]);
+            user.Username = Convert.ToString(record["USERNAME"]);
+            user.Password = Convert.ToString(record["PASSWORD"]);
+            user.Locked = Convert.ToInt32(record["LOCKEDSTATUS"]) == 0 ? false : true;
+            user.UserRole = Role.Transform(record, false);
+            user.UserBranch = Branch.TransformBranch(record);
+            user.CreatedOn = Convert.ToDateTime(record["CREATEDON"]);
+
+            return user;
         }
     }
 }
